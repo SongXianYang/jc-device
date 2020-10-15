@@ -6,3 +6,6 @@ device_param
 device_rule
 device_tag
 groups
+
+##Bug1、显示数据问题
+##Bug2.其他表不能插入设备编号问题
