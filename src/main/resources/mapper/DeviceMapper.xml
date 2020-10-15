@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jc.local.mapper.DeviceMapper">
+
     <resultMap id="BaseResultMap" type="com.jc.local.entity.Device">
         <id column="ID" jdbcType="INTEGER" property="id" />
         <result column="NUMBER" jdbcType="VARCHAR" property="number" />
@@ -17,6 +18,37 @@
         <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime" />
         <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
         <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime" />
+    </resultMap>
+<!--    //解决单表查询-->
+    <resultMap id="BaseResultMapNumber" type="com.jc.local.entity.Device">
+        <id column="ID" jdbcType="INTEGER" property="id" />
+        <result column="NUMBER" jdbcType="VARCHAR" property="number" />
+        <result column="DM_NUM" jdbcType="VARCHAR" property="dmNum" />
+        <result column="NAME" jdbcType="VARCHAR" property="name" />
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+        <result column="STATUS" jdbcType="CHAR" property="status" />
+        <result column="POSITION" jdbcType="VARCHAR" property="position" />
+        <result column="MP_NUM" jdbcType="VARCHAR" property="mpNum" />
+        <result column="DEV_SN" jdbcType="VARCHAR" property="devSn" />
+        <result column="IS_DEL" jdbcType="CHAR" property="isDel" />
+        <result column="OP_FLAG" jdbcType="CHAR" property="opFlag" />
+        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+        <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime" />
+        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+        <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime" />
+        <association property="deviceOutput" javaType="com.jc.local.entity.DeviceOutput">
+            <id column="ID" jdbcType="INTEGER" property="id" />
+            <result column="DEVICE_NUM" jdbcType="VARCHAR" property="deviceNum" />
+            <result column="META_NUM" jdbcType="VARCHAR" property="metaNum" />
+            <result column="CODE" jdbcType="VARCHAR" property="code" />
+            <result column="VALUE" jdbcType="VARCHAR" property="value" />
+            <result column="IS_DEL" jdbcType="CHAR" property="isDel" />
+            <result column="OP_FLAG" jdbcType="CHAR" property="opFlag" />
+            <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+            <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime" />
+            <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+            <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime" />
+        </association>
     </resultMap>
 
     <select id="selectAll" resultMap="BaseResultMap">
@@ -66,7 +98,7 @@
     </update>
 
     <delete id="deleteIds" parameterType="java.lang.Integer">
-        delete from device where ID in 
+        delete from device where ID in
         <foreach collection="list" open="(" close=")" separator="," index="index"  item="ids" >
             #{ids}
         </foreach>
@@ -75,4 +107,13 @@
     <update id="startStop" parameterType="com.jc.local.entity.Device">
         update device set STATUS = #{status,jdbcType=CHAR}  where ID= #{id}
     </update>
+
+    <select id="selectNumberOutputAll" resultMap="BaseResultMapNumber">
+        SELECT
+            *
+        FROM
+            device d
+            INNER JOIN device_output o ON d.NUMBER = o.DEVICE_NUM
+	</select>
+
 </mapper>

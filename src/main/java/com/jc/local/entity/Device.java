@@ -2,6 +2,8 @@ package com.jc.local.entity;
 
 import lombok.Data;
 
+
+import java.beans.Transient;
 import java.util.Date;
 
 @Data
@@ -36,4 +38,9 @@ public class Device {
 
     private Date updatedTime;
 
+    private DeviceOutput deviceOutput;
+    @Transient
+    public DeviceOutput getDeviceOutput() {
+        return deviceOutput;
+    }
 }

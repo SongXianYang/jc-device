@@ -24,4 +24,8 @@ public interface DeviceMapper {
 
     //设备启停
     void startStop(Device device);
+    //关联设备输出 （一对一）
+
+    List<Device> selectNumberOutputAll();
+
 }

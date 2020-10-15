@@ -1,15 +1,17 @@
 package com.jc.local.controller;
 
 import com.jc.local.entity.Device;
-import com.jc.local.mapper.DeviceMapper;
+import com.jc.local.entity.DeviceParam;
+import com.jc.local.entity.DeviceRuleChain;
+import com.jc.local.mapper.*;
 import com.jc.local.service.DeviceService;
+import com.jc.local.utils.NumberUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,17 @@ public class DeviceController {
     DeviceService deviceService;
     @Autowired
     DeviceMapper deviceMapper;
+
+    @Autowired
+    DeviceRuleChainMapper deviceRuleChainMapper;
+    @Autowired
+    DeviceParamMapper deviceParamMapper;
+    @Autowired
+    DeviceOutputMapper deviceOutputMapper;
+    @Autowired
+    DeviceGroupMapper deviceGroupMapper;
+    @Autowired
+    DeviceTagMapper deviceTagMapper;
 
     @GetMapping("/list")
     @ApiOperation(value = "查询所有设备", notes = "查询所有设备")
@@ -43,6 +56,13 @@ public class DeviceController {
     @PostMapping("save")
     @ApiOperation(value = "添加设备", notes = "添加设备")
     public String save(Device device) {
+        String number = NumberUtils.createUniqueKey();
+        device.setNumber(number);
+
+        DeviceRuleChain deviceRuleChain = new DeviceRuleChain();
+        deviceRuleChain.setDeviceNum(number);
+        deviceRuleChainMapper.save(deviceRuleChain);
+
         int result = deviceMapper.save(device);
         if (result >= 1) {
             return "添加成功";
@@ -116,4 +136,14 @@ public class DeviceController {
         deviceService.state(id, "0");
         return "停止成功";
     }
+
+    //关联设备输出 （一对一）
+    @GetMapping("/listOutput")
+    @ApiOperation(value = "设备与设备输出 通过设备编号进行关联的数据", notes = "设备与设备输出 通过设备编号进行关联的数据")
+    public List<Device> listOutput() {
+        List<Device> list = deviceMapper.selectNumberOutputAll();
+        return list;
+    }
+
+
 }

@@ -1,19 +1,23 @@
 package com.jc.local.service;
 
-import com.jc.local.entity.Device;
+import com.jc.local.utils.NumberUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
+import java.security.Key;
 
 @SpringBootTest
 class DeviceServiceTest {
     @Autowired
     private DeviceService deviceService;
 
+
     @Test
-    private List<Device> selectAll() {
-        return deviceService.selectAll();
+    void keys() {
+        String key = NumberUtils.createUniqueKey();
+        System.out.println(key);
+        System.out.println(key);
+        System.out.println(key);
     }
 }
