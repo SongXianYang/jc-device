@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jc.local.mapper.GroupsMapper">
+    <resultMap id="BaseResultMap" type="com.jc.local.entity.Groups">
+        <id column="ID" jdbcType="INTEGER" property="id" />
+        <result column="NUMBER" jdbcType="VARCHAR" property="number" />
+        <result column="NAME" jdbcType="VARCHAR" property="name" />
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+        <result column="IS_DEL" jdbcType="CHAR" property="isDel" />
+        <result column="OP_FLAG" jdbcType="CHAR" property="opFlag" />
+        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+        <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime" />
+        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+        <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime" />
+    </resultMap>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select * from db_groups
+    </select>
+
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select * from db_groups where ID=#{id}
+    </select>
+    <delete id="deleteId" parameterType="java.lang.Integer">
+        delete from db_groups where ID=#{id};
+    </delete>
+    <update id="update" parameterType="com.jc.local.entity.DeviceParam">
+        update db_groups set NUMBER = #{number,jdbcType=VARCHAR},
+          NAME = #{name,jdbcType=VARCHAR},
+          DESCRIPTION = #{description,jdbcType=VARCHAR},
+          IS_DEL = #{isDel,jdbcType=CHAR},
+          OP_FLAG = #{opFlag,jdbcType=CHAR},
+          CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+          CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+          UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+          UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP}
+        where ID = #{id,jdbcType=INTEGER}
+    </update>
+    <insert id="save" parameterType="com.jc.local.entity.DeviceParam">
+        insert into db_groups (ID, NUMBER, NAME,
+          DESCRIPTION, IS_DEL, OP_FLAG,
+          CREATED_BY, CREATED_TIME, UPDATED_BY,
+          UPDATED_TIME)
+        values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+          #{description,jdbcType=VARCHAR}, #{isDel,jdbcType=CHAR}, #{opFlag,jdbcType=CHAR},
+          #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR},
+          #{updatedTime,jdbcType=TIMESTAMP})
+    </insert>
+</mapper>

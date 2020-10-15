@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jc.local.mapper.DeviceTagMapper">
+    <resultMap id="BaseResultMap" type="com.jc.local.entity.DeviceTag">
+        <id column="ID" jdbcType="INTEGER" property="id" />
+        <result column="DEVICE_NUM" jdbcType="VARCHAR" property="deviceNum" />
+        <result column="TAG_CONTENT" jdbcType="VARCHAR" property="tagContent" />
+        <result column="IS_DEL" jdbcType="CHAR" property="isDel" />
+        <result column="OP_FLAG" jdbcType="CHAR" property="opFlag" />
+        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+        <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime" />
+        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+        <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime" />
+    </resultMap>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select * from device_tag
+    </select>
+
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select * from device_tag where ID=#{id}
+    </select>
+    <delete id="deleteId" parameterType="java.lang.Integer">
+        delete from device_tag where ID=#{id}
+    </delete>
+    <update id="update" parameterType="com.jc.local.entity.DeviceParam">
+        update device_tag set
+        DEVICE_NUM = #{deviceNum,jdbcType=VARCHAR},
+          TAG_CONTENT = #{tagContent,jdbcType=VARCHAR},
+          IS_DEL = #{isDel,jdbcType=CHAR},
+          OP_FLAG = #{opFlag,jdbcType=CHAR},
+          CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+          CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+          UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+          UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP}
+        where ID = #{id,jdbcType=INTEGER}
+    </update>
+    <insert id="save" parameterType="com.jc.local.entity.DeviceParam">
+        insert into device_tag (ID, DEVICE_NUM, TAG_CONTENT,
+          IS_DEL, OP_FLAG, CREATED_BY,
+          CREATED_TIME, UPDATED_BY, UPDATED_TIME
+          )
+        values (#{id,jdbcType=INTEGER}, #{deviceNum,jdbcType=VARCHAR}, #{tagContent,jdbcType=VARCHAR},
+          #{isDel,jdbcType=CHAR}, #{opFlag,jdbcType=CHAR}, #{createdBy,jdbcType=VARCHAR},
+          #{createdTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP}
+          )
+    </insert>
+</mapper>
