@@ -3,8 +3,9 @@ package com.jc.local.entity;
 import lombok.Data;
 
 
-import java.beans.Transient;
+
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class Device {
@@ -37,10 +38,10 @@ public class Device {
     private String updatedBy;
 
     private Date updatedTime;
-
+    //    一台设备对一个设备输出
     private DeviceOutput deviceOutput;
-    @Transient
-    public DeviceOutput getDeviceOutput() {
-        return deviceOutput;
-    }
+    //    一台设备对多个参数表
+    private List<DeviceParam> deviceParamsList;
+    //一台设备对对一个规则
+    private DeviceRuleChain deviceRuleChain;
 }

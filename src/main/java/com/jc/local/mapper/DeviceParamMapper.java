@@ -2,6 +2,7 @@ package com.jc.local.mapper;
 
 
 import com.jc.local.entity.DeviceParam;
+import com.jc.local.entity.DeviceRuleChain;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -19,4 +20,8 @@ public interface DeviceParamMapper {
     int deleteId(Integer id);
     //更新设备参数
     int update(DeviceParam deviceParam);
+    //根据设备编号查询
+    List<DeviceRuleChain> selectNumber(String deviceNum);
+
+
 }

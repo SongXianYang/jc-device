@@ -2,6 +2,7 @@ package com.jc.local.mapper;
 
 import com.jc.local.entity.Device;
 import com.jc.local.entity.DeviceOutput;
+import com.jc.local.entity.DeviceRuleChain;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -19,5 +20,6 @@ public interface DeviceOutputMapper {
     int deleteId(Integer id);
     //更新设备输出
     int update(DeviceOutput deviceOutput);
-
+    //根据设备编号查询
+    DeviceRuleChain selectNumber(String deviceNum);
 }

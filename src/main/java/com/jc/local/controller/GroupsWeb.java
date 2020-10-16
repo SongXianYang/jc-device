@@ -2,6 +2,7 @@ package com.jc.local.controller;
 
 import com.jc.local.entity.Groups;
 import com.jc.local.mapper.GroupsMapper;
+import com.jc.local.utils.NumberUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ public class GroupsWeb {
     @PostMapping("save")
     @ApiOperation(value = "添加设备组", notes = "添加设备组")
     public String save(Groups groups) {
+        groups.setNumber(NumberUtils.createNumberKey());
         int result = groupsMapper.save(groups);
         if (result >= 1) {
             return "添加成功";

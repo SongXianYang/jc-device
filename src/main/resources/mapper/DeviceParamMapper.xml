@@ -50,4 +50,9 @@
           #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR},
           #{updatedTime,jdbcType=TIMESTAMP})
     </insert>
+
+    <select id="selectNumber" parameterType="java.lang.String" resultMap="BaseResultMap" >
+        select * from device_param where DEVICE_NUM = #{deviceNum}
+    </select>
+
 </mapper>

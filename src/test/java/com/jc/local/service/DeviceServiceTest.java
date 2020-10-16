@@ -15,7 +15,7 @@ class DeviceServiceTest {
 
     @Test
     void keys() {
-        String key = NumberUtils.createUniqueKey();
+        String key = NumberUtils.createNumberKey();
         System.out.println(key);
         System.out.println(key);
         System.out.println(key);

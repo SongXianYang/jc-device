@@ -1,8 +1,6 @@
 package com.jc.local.controller;
 
-import com.jc.local.entity.Device;
-import com.jc.local.entity.DeviceParam;
-import com.jc.local.entity.DeviceRuleChain;
+import com.jc.local.entity.*;
 import com.jc.local.mapper.*;
 import com.jc.local.service.DeviceService;
 import com.jc.local.utils.NumberUtils;
@@ -56,12 +54,28 @@ public class DeviceController {
     @PostMapping("save")
     @ApiOperation(value = "添加设备", notes = "添加设备")
     public String save(Device device) {
-        String number = NumberUtils.createUniqueKey();
+        String number = NumberUtils.createNumberKey();
         device.setNumber(number);
 
         DeviceRuleChain deviceRuleChain = new DeviceRuleChain();
         deviceRuleChain.setDeviceNum(number);
         deviceRuleChainMapper.save(deviceRuleChain);
+
+        DeviceParam deviceParam = new DeviceParam();
+        deviceParam.setDeviceNum(number);
+        deviceParamMapper.save(deviceParam);
+
+        DeviceOutput deviceOutput = new DeviceOutput();
+        deviceOutput.setDeviceNum(number);
+        deviceOutputMapper.save(deviceOutput);
+
+//        DeviceGroup deviceGroup = new DeviceGroup();
+//        deviceGroup.setDeviceNum(number);
+//        deviceGroupMapper.save(deviceGroup);
+
+        DeviceTag deviceTag = new DeviceTag();
+        deviceTag.setDeviceNum(number);
+        deviceTagMapper.save(deviceTag);
 
         int result = deviceMapper.save(device);
         if (result >= 1) {
@@ -138,12 +152,28 @@ public class DeviceController {
     }
 
     //关联设备输出 （一对一）
-    @GetMapping("/listOutput")
-    @ApiOperation(value = "设备与设备输出 通过设备编号进行关联的数据", notes = "设备与设备输出 通过设备编号进行关联的数据")
-    public List<Device> listOutput() {
-        List<Device> list = deviceMapper.selectNumberOutputAll();
+    @GetMapping("/deviceJoinDeviceOutput/{number}")
+    @ApiImplicitParam(name = "number", value = "设备编号number", dataType = "String")
+    @ApiOperation(value = "设备表与输出表 通过设备编号进行关联的数据", notes = "设备表与输出表 通过设备编号进行关联的数据")
+    public List<Device> deviceJoinDeviceOutput(@PathVariable String number) {
+        List<Device> list = deviceMapper.deviceJoinDeviceOutput(number);
         return list;
     }
 
-
+    //关联设备参数 （一对多）
+    @GetMapping("/deviceJoinDeviceParamList/{number}")
+    @ApiImplicitParam(name = "number", value = "设备编号number", dataType = "String")
+    @ApiOperation(value = "设备表与参数表 通过设备编号进行关联的数据", notes = "设备表与参数表 通过设备编号进行关联的数据")
+    public List<Device> deviceJoinDeviceParamList (@PathVariable String number) {
+        List<Device> list = deviceMapper.deviceJoinDeviceParamList(number);
+        return list;
+    }
+    //一台设备对一个规则
+    @GetMapping("/deviceJoinDeviceRule/{number}")
+    @ApiImplicitParam(name = "number", value = "设备编号number", dataType = "String")
+    @ApiOperation(value = "设备表与规则表 通过设备编号进行关联的数据", notes = "设备表与规则表 通过设备编号进行关联的数据")
+    public Device deviceJoinDeviceRule (@PathVariable String number) {
+        Device device = deviceMapper.deviceJoinDeviceRule(number);
+        return device;
+    }
 }

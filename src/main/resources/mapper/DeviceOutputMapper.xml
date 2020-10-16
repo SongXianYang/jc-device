@@ -50,4 +50,9 @@
     <delete id="deleteId" parameterType="java.lang.Integer">
         delete from device_output where ID=#{id}
     </delete>
+
+    <select id="selectNumber" parameterType="java.lang.String" resultMap="BaseResultMap" >
+        select * from device_output where DEVICE_NUM = #{deviceNum}
+    </select>
+
 </mapper>

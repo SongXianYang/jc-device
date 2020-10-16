@@ -24,8 +24,14 @@ public interface DeviceMapper {
 
     //设备启停
     void startStop(Device device);
-    //关联设备输出 （一对一）
 
-    List<Device> selectNumberOutputAll();
+    //关联设备输出 （一对一）
+    List<Device> deviceJoinDeviceOutput(String number);
+
+    //设备关联参数 （一对多）
+    List<Device> deviceJoinDeviceParamList(String number);
+
+    //设备关联设备职责链
+    Device deviceJoinDeviceRule(String number);
 
 }
