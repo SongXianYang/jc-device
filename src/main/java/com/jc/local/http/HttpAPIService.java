@@ -16,6 +16,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Service
 public class HttpAPIService {
@@ -34,6 +35,7 @@ public class HttpAPIService {
      * @return
      * @throws Exception
      */
+    @ExceptionHandler()
     public String doGet(String url) throws Exception {
         // 声明 http get 请求
         HttpGet httpGet = new HttpGet(url);

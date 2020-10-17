@@ -7,6 +7,7 @@ import com.jc.local.utils.NumberUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("device")
+@Log
 public class DeviceController {
     @Autowired
     DeviceService deviceService;
@@ -173,6 +175,7 @@ public class DeviceController {
     @ApiImplicitParam(name = "number", value = "设备编号number", dataType = "String")
     @ApiOperation(value = "设备表与规则表 通过设备编号进行关联的数据", notes = "设备表与规则表 通过设备编号进行关联的数据")
     public Device deviceJoinDeviceRule (@PathVariable String number) {
+        log.config("他被调用了");
         Device device = deviceMapper.deviceJoinDeviceRule(number);
         return device;
     }

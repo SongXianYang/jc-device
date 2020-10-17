@@ -1,29 +1,79 @@
 package com.jc.local.controller;
 
+import com.jc.local.entity.Groups;
 import com.jc.local.http.HttpAPIService;
+import com.jc.local.mapper.GroupsMapper;
 import com.jc.local.service.DeviceService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.jc.local.utils.Response;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 
-@Controller
+@Slf4j
+@RestController
 @RequestMapping("/test")
+@Api(value = "http测试")
 public class TestHttpClient {
-    @Autowired
-    private HttpAPIService httpAPIService;
-    @Autowired
-    DeviceService deviceService;
+    private final HttpAPIService httpAPIService;
+    private final DeviceService deviceService;
+    private final GroupsMapper groupsMapper;
 
-    @GetMapping("http")
-    public String test() {
+    public TestHttpClient(HttpAPIService httpAPIService, DeviceService deviceService, GroupsMapper groupsMapper) {
+        this.httpAPIService = httpAPIService;
+        this.deviceService = deviceService;
+        this.groupsMapper = groupsMapper;
+    }
+
+    @ApiOperation(value = "测试APP请求功能是否正常", tags = "http测试接口")
+    @GetMapping(value = "http", produces = "application/json")
+    public Response<String> test() throws Exception {
+        String apiResult = httpAPIService.doGet("https://www.baidu.com");
+        return Response.success(apiResult);
+    }
+
+    @GetMapping("groups")
+    public String getGroups() throws Exception {
+        String s = httpAPIService.doGet("http://localhost:9090/Groups/list");
+        System.out.println(s);
+        return "获取组数据";
+    }
+
+    @GetMapping("GroupById/{id}")
+    @ApiImplicitParam(name = "id", value = "设备id", dataType = "Integer")
+    public void GroupById(@PathVariable Integer id) {
         try {
-            String str = httpAPIService.doGet("https://www.baidu.com");
-            System.out.println(str);
+            httpAPIService.doGet("http://localhost:9090/Groups/byId/" + id);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "你好HttpClient";
+    }
+
+    //测试获取组表数据  然后插入到我的组表
+    @PostMapping("groupAdd/{id}")
+    @ApiImplicitParam(name = "id", value = "设备id", dataType = "Integer")
+    public String groupAdd(@PathVariable Integer id) {
+        HashMap<String, Object> map = new HashMap<>();
+        Groups groups = new Groups();
+
+        map.put("number", groups.getNumber());
+        map.put("name", groups.getName());
+        map.put("updatedBy", groups.getUpdatedBy());
+
+        try {
+            httpAPIService.doGet("http://localhost:9090/Groups/byId/" + id, map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        int save = groupsMapper.save(groups);
+        if (save >= 1) {
+            return "插入成功";
+        } else {
+            return "插入失败";
+        }
     }
 }
