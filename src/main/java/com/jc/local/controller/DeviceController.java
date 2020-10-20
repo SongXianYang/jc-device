@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.jc.local.entity.*;
 import com.jc.local.entity.devRepo.Model;
+import com.jc.local.entity.devRepo.ModelOutput;
+import com.jc.local.entity.devRepo.ModelParam;
 import com.jc.local.entity.ruleEntity.Chain;
 import com.jc.local.http.HttpAPIService;
 import com.jc.local.mapper.*;
@@ -58,7 +60,10 @@ public class DeviceController {
         this.httpAPIService = httpAPIService;
     }
 
+
+
     public static ObjectMapper mapper = new ObjectMapper();
+
     static {
         // 转换为格式化的json
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
@@ -88,7 +93,7 @@ public class DeviceController {
     }
 
     @PostMapping("save/{mid}")
-    @ApiImplicitParam(name = "mid",value = "型号id",dataType = "int")
+    @ApiImplicitParam(name = "mid", value = "设备型号id", dataType = "int")
     @ApiOperation(value = "添加设备", notes = "添加设备")
     public String save(@PathVariable int mid) {
         Device device = new Device();
@@ -101,7 +106,8 @@ public class DeviceController {
             System.out.println(models);
             device.setDmNum(models.getNumber());
             device.setName(models.getName());
-            device.setDevSn(models.getManuNum()+models.getNumber());
+            device.setDevSn(models.getManuNum() + models.getNumber());
+            device.setIsDel("0");
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -154,18 +160,6 @@ public class DeviceController {
     @ApiOperation(value = "设备启动", notes = "设备启动")
     @ApiImplicitParam(name = "id", value = "设备id", dataType = "int")
     public String start(@PathVariable int id) {
-//        Device deviceStop = deviceMapper.getById(id);
-//        if (deviceStop.getStatus().equals(1)) {
-//            deviceStop.setStatus("0");
-//            deviceMapper.startStop(deviceStop);
-//            System.out.println(deviceStop);
-//            return "设备关闭成功";
-//        } else {
-//            Device deviceStart = new Device();
-//            deviceStart.setStatus("1");
-//            deviceMapper.startStop(deviceStart);
-//            return "设备开启成功";
-//        }
         deviceService.state(id, "1");
         return "启动成功";
     }
@@ -205,5 +199,74 @@ public class DeviceController {
         return device;
     }
 
-    //根据
+    //物理删除
+    @PutMapping("idDelete/{id}")
+    @ApiImplicitParam(name = "id", value = "设备编号", dataType = "Integer")
+    @ApiOperation(value = "设备逻辑删除", notes = "设备逻辑删除")
+    public String idDelete(@PathVariable Integer id) {
+        int i = deviceMapper.idDelete(id);
+        if (i >= 1) {
+            return "逻辑删除成功";
+        } else {
+            return "逻辑删除失败";
+        }
+    }
+
+    //添加设备最终版（同时插入设备参数与输出）
+    @PostMapping("insertAll/{mid}")
+    @ApiImplicitParam(name = "mid", value = "设备型号id", dataType = "int")
+    @ApiOperation(value = "添加设备最终版（同时插入设备参数与输出）", notes = "添加设备最终版（同时插入设备参数与输出）")
+    public String insertAll(@PathVariable Integer mid) {
+        Device device = new Device();
+        try {
+            String number = NumberUtils.createNumberKey();
+            device.setNumber(number);
+            String s = httpAPIService.doGet("http://192.168.0.25:8888/model/selectOne/" + mid);
+            //获取型号编号对象
+            Model models = mapper.readValue(s, Model.class);
+            device.setDmNum(models.getNumber());
+            device.setName(models.getName());
+            device.setDevSn(models.getManuNum() + models.getNumber());
+            device.setIsDel("0");
+
+            /**
+             * 在输出表中插入：设备编号
+             */
+            DeviceOutput deviceOutput = new DeviceOutput();
+            deviceOutput.setDeviceNum(number);
+            //利用型号编号查询
+            String s1 = httpAPIService.doGet("http://192.168.0.25:8888/modeloutput/selectOne/" + models.getNumber());
+            ModelOutput modelOutput = mapper.readValue(s1, ModelOutput.class);//输出表对象
+            //赋值：元数据编号
+            deviceOutput.setMetaNum(modelOutput.getNumber());
+            //赋值；数据编码
+            deviceOutput.setCode(modelOutput.getOutputCode());
+            deviceOutputMapper.save(deviceOutput);
+
+            /**
+             * 在参数表中插入：设备编号、参数编号、参数编码、参数值
+             */
+            DeviceParam deviceParam = new DeviceParam();
+            deviceParam.setDeviceNum(number);//设备编号
+            //用型号编号查询获取 参数表对象
+            String s2 = httpAPIService.doGet("http://192.168.0.25:8888/modelparam/selectOne/" + models.getNumber());
+            ModelParam modelParam = mapper.readValue(s2, ModelParam.class);//参数表对象
+            deviceParam.setParamNum(modelParam.getNumber());//赋值参数码
+            deviceParam.setCode(modelParam.getCode());//赋值参数码
+            deviceParam.setValue(modelParam.getMDefault());//赋值参数值
+            deviceParamMapper.save(deviceParam);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        int result = deviceService.save(device);
+        if (result >= 1) {
+            return "添加成功";
+        } else {
+            return "添加失败";
+        }
+
+    }
+
 }

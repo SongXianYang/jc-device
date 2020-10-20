@@ -10,4 +10,6 @@ public interface DeviceService {
     void state(Integer id,String started);
     //添加设备
     int save(Device device);
+
+    String insertAll();
 }

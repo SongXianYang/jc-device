@@ -4,15 +4,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.jc.local.entity.Device;
-import com.jc.local.entity.Groups;
+import com.jc.local.entity.DeviceOutput;
 import com.jc.local.entity.devRepo.Model;
 import com.jc.local.http.HttpAPIService;
 import com.jc.local.mapper.DeviceMapper;
 import com.jc.local.service.DeviceService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.jc.local.utils.NumberUtils;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -51,6 +50,11 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public int save(Device device) {
         return deviceMapper.save(device);
+    }
+
+    @Override
+    public String insertAll() {
+        return null;
     }
 
 

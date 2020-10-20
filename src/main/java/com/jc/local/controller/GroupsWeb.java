@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 //设备组
-@Api(tags = "设备组接口")
+@Api(tags = "组接口")
 @RestController
 @RequestMapping("Groups")
 public class GroupsWeb {
