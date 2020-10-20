@@ -72,7 +72,6 @@
 <!--   设备对参数     一对多   -->
         <collection property="deviceParamsList" column="DEVICE_NUM"
                     select="com.jc.local.mapper.DeviceParamMapper.selectNumber">
-
         </collection>
 <!--        <collection property="deviceParamsList" ofType="com.jc.local.entity.DeviceParam">-->
 <!--            <id column="ID" jdbcType="INTEGER" property="id" />-->

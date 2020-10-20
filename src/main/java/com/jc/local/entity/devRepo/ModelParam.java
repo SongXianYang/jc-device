@@ -1,6 +1,7 @@
 package com.jc.local.entity.devRepo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -35,7 +36,10 @@ public class ModelParam implements Serializable {
      * 参数码;参数码
      */
     private String code;
-    /** 默认值;参数默认值，多选用英文","分割 */
+    /**
+     * 默认值;参数默认值，多选用英文","分割
+     */
+    @JsonProperty("mDefault")
     private String mDefault;
     /**
      * 参数描述;参数描述

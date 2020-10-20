@@ -81,7 +81,7 @@ public class DeviceOutputController {
         DeviceOutput deviceOutput = new DeviceOutput();
 
         try {
-            String s = httpAPIService.doGet("");
+            String s = httpAPIService.doGet("http://192.168.0.25:8888/modeloutput/selectOne/"+oid);
             ModelOutput modelOutput = mapper.readValue(s, ModelOutput.class);
             Device device = deviceMapper.getById(did);
             deviceOutput.setDeviceNum(device.getNumber());
