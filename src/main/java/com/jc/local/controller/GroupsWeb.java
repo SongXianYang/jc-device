@@ -3,6 +3,7 @@ package com.jc.local.controller;
 import com.jc.local.entity.Groups;
 import com.jc.local.mapper.GroupsMapper;
 import com.jc.local.utils.NumberUtils;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 //设备组
+@Api(tags = "设备组接口")
 @RestController
 @RequestMapping("Groups")
 public class GroupsWeb {

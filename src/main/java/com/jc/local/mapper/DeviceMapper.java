@@ -33,5 +33,6 @@ public interface DeviceMapper {
 
     //设备关联设备职责链
     Device deviceJoinDeviceRule(String number);
-
+    //根据设备名称查询
+//    Device device
 }

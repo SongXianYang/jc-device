@@ -24,15 +24,10 @@ public class SwaggerConfig {
                 .build();         //构建
     }
 
-    /**
-     * 详细描述先为空
-     * @return
-     */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("这里是测试Swagger2的功能文档")    //文档的标题
-                .description("这里是测试用的")      //文档的描述
-                .contact("小波波")                        //作者
+                .title("这里是测试物联网设备的功能文档")    //文档的标题
+                .description("测试用的")      //文档的描述
                 .version("v0.0.1")                          //版本
                 .build();
     }

@@ -1,7 +1,9 @@
 package com.jc.local.controller;
 
+import com.jc.local.entity.Device;
 import com.jc.local.entity.Groups;
 import com.jc.local.http.HttpAPIService;
+import com.jc.local.mapper.DeviceMapper;
 import com.jc.local.mapper.GroupsMapper;
 import com.jc.local.service.DeviceService;
 import com.jc.local.utils.Response;
@@ -9,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -22,7 +25,8 @@ public class TestHttpClient {
     private final HttpAPIService httpAPIService;
     private final DeviceService deviceService;
     private final GroupsMapper groupsMapper;
-
+    @Autowired
+    DeviceMapper deviceMapper;
     public TestHttpClient(HttpAPIService httpAPIService, DeviceService deviceService, GroupsMapper groupsMapper) {
         this.httpAPIService = httpAPIService;
         this.deviceService = deviceService;
@@ -58,17 +62,24 @@ public class TestHttpClient {
     @ApiImplicitParam(name = "id", value = "设备id", dataType = "Integer")
     public String groupAdd(@PathVariable Integer id) {
         HashMap<String, Object> map = new HashMap<>();
-        Groups groups = new Groups();
+        Groups groups = groupsMapper.getById(id);
+//        int i=5;
+//        groups.setId(i++);
+//        Device device = new Device();
+//        device.setNumber(groups.getNumber());
+//        device.setName(groups.getName());
+//        device.setUpdatedBy(groups.getUpdatedBy());
 
         map.put("number", groups.getNumber());
         map.put("name", groups.getName());
-        map.put("updatedBy", groups.getUpdatedBy());
+        map.put("updateBy", groups.getUpdatedBy());
 
         try {
             httpAPIService.doGet("http://localhost:9090/Groups/byId/" + id, map);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("============================"+map);
         int save = groupsMapper.save(groups);
         if (save >= 1) {
             return "插入成功";

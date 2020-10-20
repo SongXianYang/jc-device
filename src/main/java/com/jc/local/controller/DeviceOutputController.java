@@ -1,21 +1,56 @@
 package com.jc.local.controller;
 
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.jc.local.entity.Device;
 import com.jc.local.entity.DeviceOutput;
+import com.jc.local.entity.devRepo.ModelOutput;
+import com.jc.local.http.HttpAPIService;
+import com.jc.local.mapper.DeviceMapper;
 import com.jc.local.mapper.DeviceOutputMapper;
+import com.jc.local.service.DeviceOutputService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 //设备输出
+@Api(tags = "设备输出接口")
 @RestController
 @RequestMapping("DeviceOutput")
 public class DeviceOutputController {
-    @Autowired
     DeviceOutputMapper deviceOutputMapper;
+
+    DeviceOutputService deviceOutputService;
+
+    HttpAPIService httpAPIService;
+
+
+    DeviceMapper deviceMapper;
+
+    public DeviceOutputController(DeviceOutputService deviceOutputService, DeviceOutputMapper deviceOutputMapper, HttpAPIService httpAPIService, DeviceMapper deviceMapper) {
+        this.deviceOutputService = deviceOutputService;
+        this.deviceOutputMapper = deviceOutputMapper;
+        this.httpAPIService = httpAPIService;
+        this.deviceMapper = deviceMapper;
+    }
+
+    public static ObjectMapper mapper = new ObjectMapper();
+    static {
+        // 转换为格式化的json
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        // 如果json中有新增的字段并且是实体类类中不存在的，不报错
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        //修改日期格式
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+    }
 
     @GetMapping("list")
     @ApiOperation(value = "查询所有设备输出", notes = "查询所有设备输出")
@@ -36,9 +71,26 @@ public class DeviceOutputController {
         }
     }
 
-    @PostMapping("save")
+    @PostMapping("save/{oid}/{did}")
     @ApiOperation(value = "添加设备输出", notes = "添加设备输出")
-    public String save(DeviceOutput deviceOutput) {
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "oid", value = "输出表id", dataType = "Integer"),
+            @ApiImplicitParam(name = "did", value = "设备id", dataType = "Integer")
+    })
+    public String save(@PathVariable Integer oid, @PathVariable Integer did) {
+        DeviceOutput deviceOutput = new DeviceOutput();
+
+        try {
+            String s = httpAPIService.doGet("");
+            ModelOutput modelOutput = mapper.readValue(s, ModelOutput.class);
+            Device device = deviceMapper.getById(did);
+            deviceOutput.setDeviceNum(device.getNumber());
+            deviceOutput.setMetaNum(modelOutput.getNumber());
+            deviceOutput.setCode(modelOutput.getOutputCode());
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         int result = deviceOutputMapper.save(deviceOutput);
         if (result >= 1) {
             return "添加成功";

@@ -1,19 +1,58 @@
 package com.jc.local.controller;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.jc.local.entity.Device;
 import com.jc.local.entity.DeviceRuleChain;
+import com.jc.local.entity.ruleEntity.Chain;
+import com.jc.local.http.HttpAPIService;
+import com.jc.local.http.HttpResult;
+import com.jc.local.mapper.DeviceMapper;
 import com.jc.local.mapper.DeviceRuleChainMapper;
+import com.jc.local.service.DeviceRuleChainService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+
 //设备规则链链
+@Api(tags = "设备规则链接口")
 @RestController
 @RequestMapping("DeviceRuleChain")
 public class DeviceRuleChainWeb {
-    @Autowired
+
     DeviceRuleChainMapper deviceRuleChainMapper;
+
+
+    HttpAPIService httpAPIService;
+
+    DeviceMapper deviceMapper;
+
+    DeviceRuleChainService deviceRuleChainService;
+
+    public static ObjectMapper mapper = new ObjectMapper();
+    static {
+        // 转换为格式化的json
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        // 如果json中有新增的字段并且是实体类类中不存在的，不报错
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        //修改日期格式
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    public DeviceRuleChainWeb(DeviceRuleChainMapper deviceRuleChainMapper, HttpAPIService httpAPIService,
+                              DeviceMapper deviceMapper, DeviceRuleChainService deviceRuleChainService) {
+        this.deviceRuleChainMapper = deviceRuleChainMapper;
+        this.httpAPIService = httpAPIService;
+        this.deviceMapper = deviceMapper;
+        this.deviceRuleChainService = deviceRuleChainService;
+    }
 
     @GetMapping("/list")
     @ApiOperation(value = "查询所有设备规则链", notes = "查询所有设备规则链")
@@ -64,4 +103,39 @@ public class DeviceRuleChainWeb {
         return byId;
     }
 
+
+    //用httpclient获取规则编号
+    @PostMapping("chainNumber/{cid}/{did}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "cid", value = "规则链id", dataType = "Integer"),
+            @ApiImplicitParam(name = "did", value = "设备id", dataType = "Integer")
+    })
+    @ApiOperation(value = "使用httpclient获取规则链编号", notes = "使用httpclient获取规则链编号")
+    public String chainNumber(@PathVariable Integer cid, @PathVariable Integer did) {
+
+        //获取设备编号
+        Device device = deviceMapper.getById(did);
+
+
+        DeviceRuleChain ruleChain = new DeviceRuleChain();
+
+        try {
+
+            String result = httpAPIService.doGet("http://192.168.0.27:8080/ruleChain/selectRuleChain/" + cid);
+            //json转换成对象
+            Chain chain = mapper.readValue(result, Chain.class);
+            System.out.println(chain);
+            ruleChain.setDeviceNum(device.getNumber());
+            ruleChain.setChainNum(chain.getNumber());
+            System.out.println(chain);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        int i = deviceRuleChainService.save(ruleChain);
+        if (i >= 1) {
+            return "插入规则链编号与设备编号成功!!";
+        } else {
+            return "error";
+        }
+    }
 }

@@ -1,38 +1,72 @@
 package com.jc.local.controller;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.jc.local.entity.*;
+import com.jc.local.entity.devRepo.Model;
+import com.jc.local.entity.ruleEntity.Chain;
+import com.jc.local.http.HttpAPIService;
 import com.jc.local.mapper.*;
 import com.jc.local.service.DeviceService;
 import com.jc.local.utils.NumberUtils;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
-import lombok.extern.java.Log;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("device")
-@Log
+@Api(tags = "设备接口")
 public class DeviceController {
-    @Autowired
+
     DeviceService deviceService;
-    @Autowired
+
     DeviceMapper deviceMapper;
 
-    @Autowired
     DeviceRuleChainMapper deviceRuleChainMapper;
-    @Autowired
+
     DeviceParamMapper deviceParamMapper;
-    @Autowired
+
     DeviceOutputMapper deviceOutputMapper;
-    @Autowired
+
     DeviceGroupMapper deviceGroupMapper;
-    @Autowired
+
     DeviceTagMapper deviceTagMapper;
+
+    HttpAPIService httpAPIService;
+
+    public DeviceController(DeviceService deviceService, DeviceMapper deviceMapper,
+                            DeviceRuleChainMapper deviceRuleChainMapper,
+                            DeviceParamMapper deviceParamMapper,
+                            DeviceOutputMapper deviceOutputMapper,
+                            DeviceGroupMapper deviceGroupMapper,
+                            DeviceTagMapper deviceTagMapper,
+                            HttpAPIService httpAPIService) {
+        this.deviceService = deviceService;
+        this.deviceMapper = deviceMapper;
+        this.deviceRuleChainMapper = deviceRuleChainMapper;
+        this.deviceParamMapper = deviceParamMapper;
+        this.deviceOutputMapper = deviceOutputMapper;
+        this.deviceGroupMapper = deviceGroupMapper;
+        this.deviceTagMapper = deviceTagMapper;
+        this.httpAPIService = httpAPIService;
+    }
+
+    public static ObjectMapper mapper = new ObjectMapper();
+    static {
+        // 转换为格式化的json
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        // 如果json中有新增的字段并且是实体类类中不存在的，不报错
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//        //修改日期格式
+//        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+    }
 
     @GetMapping("/list")
     @ApiOperation(value = "查询所有设备", notes = "查询所有设备")
@@ -53,33 +87,26 @@ public class DeviceController {
         }
     }
 
-    @PostMapping("save")
+    @PostMapping("save/{mid}")
+    @ApiImplicitParam(name = "mid",value = "型号id",dataType = "int")
     @ApiOperation(value = "添加设备", notes = "添加设备")
-    public String save(Device device) {
-        String number = NumberUtils.createNumberKey();
-        device.setNumber(number);
+    public String save(@PathVariable int mid) {
+        Device device = new Device();
+        try {
+            String number = NumberUtils.createNumberKey();
+            device.setNumber(number);
+            String s = httpAPIService.doGet("http://192.168.0.25:8888/model/selectOne/" + mid);
+            //获取型号编号对象
+            Model models = mapper.readValue(s, Model.class);
+            System.out.println(models);
+            device.setDmNum(models.getNumber());
+            device.setName(models.getName());
+            device.setDevSn(models.getManuNum()+models.getNumber());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
 
-        DeviceRuleChain deviceRuleChain = new DeviceRuleChain();
-        deviceRuleChain.setDeviceNum(number);
-        deviceRuleChainMapper.save(deviceRuleChain);
-
-        DeviceParam deviceParam = new DeviceParam();
-        deviceParam.setDeviceNum(number);
-        deviceParamMapper.save(deviceParam);
-
-        DeviceOutput deviceOutput = new DeviceOutput();
-        deviceOutput.setDeviceNum(number);
-        deviceOutputMapper.save(deviceOutput);
-
-//        DeviceGroup deviceGroup = new DeviceGroup();
-//        deviceGroup.setDeviceNum(number);
-//        deviceGroupMapper.save(deviceGroup);
-
-        DeviceTag deviceTag = new DeviceTag();
-        deviceTag.setDeviceNum(number);
-        deviceTagMapper.save(deviceTag);
-
-        int result = deviceMapper.save(device);
+        int result = deviceService.save(device);
         if (result >= 1) {
             return "添加成功";
         } else {
@@ -89,9 +116,7 @@ public class DeviceController {
 
     @PutMapping("update")
     @ApiOperation(value = "更新设备", notes = "更新设备")
-//    @ApiImplicitParam(name = "id", value = "设备id", dataType = "int")
     public String update(Device device) {
-//        device=deviceMapper.getById(id);
         int result = deviceMapper.update(device);
         if (result >= 1) {
             return "更新成功";
@@ -166,17 +191,19 @@ public class DeviceController {
     @GetMapping("/deviceJoinDeviceParamList/{number}")
     @ApiImplicitParam(name = "number", value = "设备编号number", dataType = "String")
     @ApiOperation(value = "设备表与参数表 通过设备编号进行关联的数据", notes = "设备表与参数表 通过设备编号进行关联的数据")
-    public List<Device> deviceJoinDeviceParamList (@PathVariable String number) {
+    public List<Device> deviceJoinDeviceParamList(@PathVariable String number) {
         List<Device> list = deviceMapper.deviceJoinDeviceParamList(number);
         return list;
     }
+
     //一台设备对一个规则
     @GetMapping("/deviceJoinDeviceRule/{number}")
     @ApiImplicitParam(name = "number", value = "设备编号number", dataType = "String")
     @ApiOperation(value = "设备表与规则表 通过设备编号进行关联的数据", notes = "设备表与规则表 通过设备编号进行关联的数据")
-    public Device deviceJoinDeviceRule (@PathVariable String number) {
-        log.config("他被调用了");
+    public Device deviceJoinDeviceRule(@PathVariable String number) {
         Device device = deviceMapper.deviceJoinDeviceRule(number);
         return device;
     }
+
+    //根据
 }

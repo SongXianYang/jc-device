@@ -2,6 +2,7 @@ package com.jc.local.controller;
 
 import com.jc.local.entity.DeviceTag;
 import com.jc.local.mapper.DeviceTagMapper;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 //设备标签
+@Api(tags = "设备标签接口")
 @RestController
 @RequestMapping("DeviceTag")
 public class DeviceTagWeb {

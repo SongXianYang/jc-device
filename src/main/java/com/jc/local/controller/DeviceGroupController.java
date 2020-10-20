@@ -6,6 +6,7 @@ import com.jc.local.entity.Groups;
 import com.jc.local.mapper.DeviceGroupMapper;
 import com.jc.local.mapper.DeviceMapper;
 import com.jc.local.mapper.GroupsMapper;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 //设备分组
+@Api(tags = "设备分组")
 @RestController
 @RequestMapping("DeviceGroup")
 public class DeviceGroupController {
