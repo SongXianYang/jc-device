@@ -1,13 +1,13 @@
 package com.jc.local.entity;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-
 
 import java.util.Date;
 import java.util.List;
 
+@ApiModel(value = "传感器设备信息表实体属性")
 @Data
 public class Device {
     @ApiModelProperty("记录ID")

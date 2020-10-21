@@ -1,11 +1,13 @@
 package com.jc.local.entity;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
+@ApiModel(value = "设备打标签信息表的实体属性")
 public class DeviceTag {
     @ApiModelProperty("记录ID")
     private Integer id;

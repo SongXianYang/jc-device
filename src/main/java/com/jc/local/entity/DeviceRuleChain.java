@@ -1,17 +1,20 @@
 package com.jc.local.entity;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+
 @Data
+@ApiModel(value = "设备规则链关联表的实体属性")
 public class DeviceRuleChain {
     @ApiModelProperty("记录ID")
     private Integer id;
     @ApiModelProperty("设备编号")
     private String deviceNum;
     @ApiModelProperty("规则链编号")
-    private String chainNum ;
+    private String chainNum;
     @ApiModelProperty("删除标志")
     private String isDel;
     @ApiModelProperty("操作标志")

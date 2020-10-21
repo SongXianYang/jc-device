@@ -1,10 +1,12 @@
 package com.jc.local.entity;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
 
+@ApiModel(value = "设备分组情况表实体属性")
 @Data
 public class DeviceGroup {
     @ApiModelProperty("记录ID")
