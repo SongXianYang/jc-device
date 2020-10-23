@@ -1,7 +1,7 @@
 package com.jc.local.service;
 
 import com.jc.local.entity.Device;
-import com.jc.local.entity.Groups;
+
 
 import java.util.List;
 

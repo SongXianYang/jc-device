@@ -6,8 +6,8 @@ import lombok.Data;
 
 import java.util.Date;
 
-@ApiModel(value = "设备分组情况表实体属性")
 @Data
+@ApiModel(value = "设备分组情况表实体属性")
 public class DeviceGroup {
     @ApiModelProperty("记录ID")
     private Integer id;

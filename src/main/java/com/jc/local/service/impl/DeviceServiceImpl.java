@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-@Service
+@Service("DeviceService")
 public class DeviceServiceImpl implements DeviceService {
 
     HttpAPIService httpAPIService;

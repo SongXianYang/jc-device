@@ -2,18 +2,22 @@ package com.jc.local.controller;
 
 import com.jc.local.entity.Device;
 import com.jc.local.entity.Groups;
+import com.jc.local.entity.ruleEntity.RuleRelation;
 import com.jc.local.http.HttpAPIService;
 import com.jc.local.mapper.DeviceMapper;
 import com.jc.local.mapper.GroupsMapper;
 import com.jc.local.service.DeviceService;
+import com.jc.local.service.RuleRelationService;
 import com.jc.local.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 
 @Slf4j
@@ -25,11 +29,14 @@ public class TestHttpClient {
     private final DeviceService deviceService;
     private final GroupsMapper groupsMapper;
     DeviceMapper deviceMapper;
-    public TestHttpClient(HttpAPIService httpAPIService, DeviceService deviceService, GroupsMapper groupsMapper, DeviceMapper deviceMapper) {
+
+    RuleRelationService ruleRelationService;
+    public TestHttpClient(HttpAPIService httpAPIService, DeviceService deviceService, GroupsMapper groupsMapper, DeviceMapper deviceMapper, RuleRelationService ruleRelationService) {
         this.httpAPIService = httpAPIService;
         this.deviceService = deviceService;
         this.groupsMapper = groupsMapper;
         this.deviceMapper = deviceMapper;
+        this.ruleRelationService = ruleRelationService;
     }
 
     @ApiOperation(value = "测试APP请求功能是否正常")
@@ -85,5 +92,10 @@ public class TestHttpClient {
         } else {
             return "插入失败";
         }
+    }
+    @GetMapping("treeList")
+    public List<RuleRelation> treeList() {
+        List<RuleRelation> list = ruleRelationService.treeList();
+        return list;
     }
 }

@@ -1,6 +1,8 @@
 package com.jc.local.mapper;
 
 import com.jc.local.entity.Device;
+import com.jc.local.entity.DeviceOutput;
+import com.jc.local.entity.DeviceParam;
 import org.apache.ibatis.annotations.Mapper;
 
 
@@ -30,15 +32,10 @@ public interface DeviceMapper {
     //设备启停
     void startStop(Device device);
 
-    //关联设备输出 （一对一）
-    List<Device> deviceJoinDeviceOutput(String number);
-
-    //设备关联参数 （一对多）
-    List<Device> deviceJoinDeviceParamList(String number);
-
-    //设备关联设备职责链
-    Device deviceJoinDeviceRule(String number);
-
+    //根据设备编号查询关联的参数表与输出表
+    List<Device> numberJoinOutPutJoinParamList(String number);
+    List<DeviceOutput> selectOutput(String number);
+    List<DeviceParam> selectParam(String number);
     //逻辑删除
     int idDelete(Integer id);
 }

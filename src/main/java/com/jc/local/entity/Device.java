@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @ApiModel(value = "传感器设备信息表实体属性")
 @Data
@@ -49,13 +50,14 @@ public class Device {
     private String updatedBy;
     @ApiModelProperty("更新时间")
     private Date updatedTime;
-    //    一台设备对一个设备输出表
-    @ApiModelProperty("设备输出")
-    private DeviceOutput deviceOutput;
+
     //    一台设备对多个参数表
     @ApiModelProperty("参数表")
     private List<DeviceParam> deviceParamsList;
     //一台设备对对一个规则
     @ApiModelProperty("规则")
     private DeviceRuleChain deviceRuleChain;
+    //    一台设备对多个设备输出表
+    @ApiModelProperty("设备输出")
+    private List<DeviceOutput> deviceOutputList;
 }

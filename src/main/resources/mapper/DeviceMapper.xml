@@ -2,23 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jc.local.mapper.DeviceMapper">
 
-    <resultMap id="BaseResultMap" type="com.jc.local.entity.Device">
-        <id column="ID" jdbcType="INTEGER" property="id" />
-        <result column="NUMBER" jdbcType="VARCHAR" property="number" />
-        <result column="DM_NUM" jdbcType="VARCHAR" property="dmNum" />
-        <result column="NAME" jdbcType="VARCHAR" property="name" />
-        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
-        <result column="STATUS" jdbcType="CHAR" property="status" />
-        <result column="POSITION" jdbcType="VARCHAR" property="position" />
-        <result column="MP_NUM" jdbcType="VARCHAR" property="mpNum" />
-        <result column="DEV_SN" jdbcType="VARCHAR" property="devSn" />
-        <result column="IS_DEL" jdbcType="CHAR" property="isDel" />
-        <result column="OP_FLAG" jdbcType="CHAR" property="opFlag" />
-        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
-        <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime" />
-        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
-        <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime" />
-    </resultMap>
+<!--    <resultMap id="BaseResultMap" type="com.jc.local.entity.Device">-->
+<!--        <id column="ID" jdbcType="INTEGER" property="id" />-->
+<!--        <result column="NUMBER" jdbcType="VARCHAR" property="number" />-->
+<!--        <result column="DM_NUM" jdbcType="VARCHAR" property="dmNum" />-->
+<!--        <result column="NAME" jdbcType="VARCHAR" property="name" />-->
+<!--        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />-->
+<!--        <result column="STATUS" jdbcType="CHAR" property="status" />-->
+<!--        <result column="POSITION" jdbcType="VARCHAR" property="position" />-->
+<!--        <result column="MP_NUM" jdbcType="VARCHAR" property="mpNum" />-->
+<!--        <result column="DEV_SN" jdbcType="VARCHAR" property="devSn" />-->
+<!--        <result column="IS_DEL" jdbcType="CHAR" property="isDel" />-->
+<!--        <result column="OP_FLAG" jdbcType="CHAR" property="opFlag" />-->
+<!--        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />-->
+<!--        <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime" />-->
+<!--        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />-->
+<!--        <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime" />-->
+
+<!--        <collection property="deviceParamsList" ofType="com.jc.local.entity.DeviceParam" javaType="List">-->
+<!--            <result column="DEVICE_NUM" jdbcType="VARCHAR" property="deviceNum" />-->
+<!--            <result column="PARAM_NUM" jdbcType="VARCHAR" property="paramNum" />-->
+<!--            <result column="CODE" jdbcType="VARCHAR" property="code" />-->
+<!--            <result column="VALUE" jdbcType="VARCHAR" property="value" />-->
+<!--            <result column="IS_DEL" jdbcType="CHAR" property="isDel" />-->
+<!--            <result column="OP_FLAG" jdbcType="CHAR" property="opFlag" />-->
+<!--            <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />-->
+<!--            <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime" />-->
+<!--            <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />-->
+<!--            <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime" />-->
+<!--        </collection>-->
+
+<!--        <collection property="deviceOutputList" ofType="com.jc.local.entity.DeviceOutput" javaType="List">-->
+<!--            <result column="DEVICE_NUM" jdbcType="VARCHAR" property="deviceNum" />-->
+<!--            <result column="META_NUM" jdbcType="VARCHAR" property="metaNum" />-->
+<!--            <result column="CODE" jdbcType="VARCHAR" property="code" />-->
+<!--            <result column="VALUE" jdbcType="VARCHAR" property="value" />-->
+<!--            <result column="IS_DEL" jdbcType="CHAR" property="isDel" />-->
+<!--            <result column="OP_FLAG" jdbcType="CHAR" property="opFlag" />-->
+<!--            <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />-->
+<!--            <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime" />-->
+<!--            <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />-->
+<!--            <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime" />-->
+<!--        </collection>-->
+
+<!--    </resultMap>-->
 
     <resultMap id="BaseResultMapNumber" type="com.jc.local.entity.Device">
         <id column="ID" jdbcType="INTEGER" property="id" />
@@ -36,29 +63,33 @@
         <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime" />
         <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
         <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime" />
-<!--   设备对输出     一对一   -->
-        <association property="deviceOutput" column="DEVICE_NUM"
-                     select="com.jc.local.mapper.DeviceOutputMapper.selectNumber">
 
-        </association>
-
-        <!--        设备对规则 一对一 -->
-        <association property="deviceRuleChain" column="DEVICE_NUM"
-                     select="com.jc.local.mapper.DeviceRuleChainMapper.selectNumber">
-        </association>
-
-<!--   设备对参数     一对多   -->
-        <collection property="deviceParamsList" column="DEVICE_NUM"
-                    select="com.jc.local.mapper.DeviceParamMapper.selectNumber">
+<!--                设备对规则 一对一 -->
+<!--        <association property="deviceRuleChain"-->
+<!--                     select="com.jc.local.mapper.DeviceRuleChainMapper.selectNumber">-->
+<!--        </association>-->
+        <!--   设备对参数     一对多   -->
+        <collection property="deviceParamsList"
+                    javaType="java.util.List"
+                    ofType="com.jc.local.entity.DeviceParam"
+                    select="com.jc.local.mapper.DeviceMapper.selectOutput"
+                    column="number">
+        </collection>
+        <!--   设备对输出     一对多   -->
+        <collection property="deviceOutputList"
+                    javaType="java.util.List"
+                    ofType="com.jc.local.entity.DeviceOutput"
+                    select="com.jc.local.mapper.DeviceMapper.selectParam"
+                    column="number">
         </collection>
 
     </resultMap>
 
-    <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAll" resultType="com.jc.local.entity.Device">
         select * from device d where IS_DEL=0
     </select>
 
-    <select id="getById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="getById" parameterType="java.lang.Integer" resultType="com.jc.local.entity.Device">
         select * from device where ID =#{id}
     </select>
 
@@ -111,37 +142,28 @@
         update device set STATUS = #{status,jdbcType=CHAR}  where ID= #{id}
     </update>
 
-
-    <select id="deviceJoinDeviceOutput" parameterType="java.lang.String" resultMap="BaseResultMapNumber">
-        SELECT
---             d.* , o.DEVICE_NUM,o.UPDATED_BY
-            *
-        FROM
-            device d
-            INNER JOIN device_output o ON o.DEVICE_NUM = d.NUMBER
-            AND  d.NUMBER=#{number}
-	</select>
-
-    <select id="deviceJoinDeviceParamList" parameterType="java.lang.String" resultMap="BaseResultMapNumber">
-        SELECT
-            *
-        FROM
-            device d
-            INNER JOIN device_param p ON d.NUMBER = p.DEVICE_NUM
-            AND d.NUMBER = #{number}
-    </select>
-
-    <select id="deviceJoinDeviceRule" parameterType="java.lang.String" resultMap="BaseResultMapNumber">
-        SELECT
-            *
-        FROM
-            device d
-            INNER JOIN device_rulechain r ON d.NUMBER = r.DEVICE_NUM
-            AND d.NUMBER = #{number}
-    </select>
-
     <update id="idDelete" parameterType="java.lang.Integer">
         update device set IS_DEL = 1 where ID=#{id}
     </update>
+
+    <select id="numberJoinOutPutJoinParamList" resultMap="BaseResultMapNumber" parameterType="java.lang.String" >
+        SELECT
+            *
+        FROM
+            device d
+        where d.NUMBER = #{number}
+    </select>
+
+    <select id="selectOutput" parameterType="java.lang.String" resultType="com.jc.local.entity.DeviceOutput">
+        select * from device_output where DEVICE_NUM = #{number}
+    </select>
+
+<!--    <select id="selectRulechain" parameterType="java.lang.String" resultType="com.jc.local.entity.DeviceRuleChain" >-->
+<!--        select * from device_rulechain where DEVICE_NUM = #{deviceNum}-->
+<!--    </select>-->
+
+    <select id="selectParam" parameterType="java.lang.String" resultType="com.jc.local.entity.DeviceParam" >
+        select * from device_param where DEVICE_NUM = #{number}
+    </select>
 
 </mapper>
