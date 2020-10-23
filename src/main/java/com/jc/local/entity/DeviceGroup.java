@@ -1,10 +1,13 @@
 package com.jc.local.entity;
 
+import com.xzixi.swagger2.plus.annotation.EnableSwagger2Plus;
+import com.xzixi.swagger2.plus.annotation.IgnoreSwagger2Parameter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @ApiModel(value = "设备分组情况表实体属性")

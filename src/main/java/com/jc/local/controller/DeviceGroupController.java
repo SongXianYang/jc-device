@@ -6,10 +6,12 @@ import com.jc.local.entity.Groups;
 import com.jc.local.mapper.DeviceGroupMapper;
 import com.jc.local.mapper.DeviceMapper;
 import com.jc.local.mapper.GroupsMapper;
+import com.jc.local.dto.GroupAndDeviceDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,7 @@ import java.util.List;
 @Api(tags = "设备分组接口")
 @RestController
 @RequestMapping("DeviceGroup")
+@Slf4j
 public class DeviceGroupController {
     @Autowired
     DeviceGroupMapper deviceGroupMapper;
@@ -35,7 +38,7 @@ public class DeviceGroupController {
     }
 
     @DeleteMapping("deleteId/{id}")
-    @ApiImplicitParam(name = "id",value = "设备id",required =true,dataType = "int")
+    @ApiImplicitParam(name = "id", value = "设备id", required = true, dataType = "int")
     @ApiOperation(value = "根据id删除设备分组", notes = "根据id删除设备分组")
     public String deleteId(@PathVariable int id) {
         int result = deviceGroupMapper.deleteId(id);
@@ -49,9 +52,9 @@ public class DeviceGroupController {
     @PostMapping("save/{did}/{gid}")
     @ApiOperation(value = "添加设备分组", notes = "添加设备分组")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "did",value = "设备id",required =true,dataType = "int"),
-            @ApiImplicitParam(name = "gid",value = "组id",required =true,dataType = "int")
-            })
+            @ApiImplicitParam(name = "did", value = "设备id", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "gid", value = "组id", required = true, dataType = "int")
+    })
     public String save(@PathVariable Integer did, @PathVariable Integer gid) {
         //通过getById（id）方法获取到设备与组  的  对象
         Device device = deviceMapper.getById(did);
@@ -86,5 +89,19 @@ public class DeviceGroupController {
     public DeviceGroup getById(@PathVariable Integer id) {
         DeviceGroup byId = deviceGroupMapper.getById(id);
         return byId;
+    }
+
+    //    根据组编号查询设备
+    @GetMapping("selectGroup/{groupNum}")
+    @ApiOperation(value = "根据组编号查询设备", notes = "根据组编号查询设备")
+    @ApiImplicitParam(name = "groupNum", value = "组编号", dataType = "String")
+    public List<GroupAndDeviceDTO> selectGroup(@PathVariable String groupNum) {
+        try {
+            List<GroupAndDeviceDTO> list = deviceGroupMapper.selectDeviceGroup(groupNum);
+            return list;
+        } catch (Exception exception) {
+            log.error("根据组编号查询设备",exception);
+            throw exception;
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.jc.local.config;
 
+import com.xzixi.swagger2.plus.annotation.EnableSwagger2Plus;
 import org.springframework.boot.SpringBootConfiguration;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -12,7 +13,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootConfiguration
-@EnableSwagger2
+@EnableSwagger2Plus
 public class SwaggerConfig {
     @Bean
     public Docket docket(){

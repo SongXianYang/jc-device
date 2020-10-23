@@ -1,19 +1,19 @@
 package com.jc.local.entity;
 
+import com.xzixi.swagger2.plus.annotation.IgnoreSwagger2Parameter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @ApiModel(value = "传感器设备信息表实体属性")
 @Data
 public class Device {
     @ApiModelProperty("记录ID")
     private Integer id;
-    @ApiModelProperty("设备编号")
+    @ApiModelProperty(value = "设备编号", hidden = true)
     private String number;
     @ApiModelProperty("型号编号")
     private String dmNum;
@@ -52,12 +52,15 @@ public class Device {
     private Date updatedTime;
 
     //    一台设备对多个参数表
-    @ApiModelProperty("参数表")
+    @ApiModelProperty(value = "参数表")
+    @IgnoreSwagger2Parameter // 只需要添加注解就可以在文档中排除参数
     private List<DeviceParam> deviceParamsList;
     //一台设备对对一个规则
-    @ApiModelProperty("规则")
+    @IgnoreSwagger2Parameter // 只需要添加注解就可以在文档中排除参数
+    @ApiModelProperty(value = "规则")
     private DeviceRuleChain deviceRuleChain;
     //    一台设备对多个设备输出表
-    @ApiModelProperty("设备输出")
+    @ApiModelProperty(value = "设备输出")
+    @IgnoreSwagger2Parameter // 只需要添加注解就可以在文档中排除参数
     private List<DeviceOutput> deviceOutputList;
 }
