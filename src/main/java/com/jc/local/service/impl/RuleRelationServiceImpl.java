@@ -11,19 +11,27 @@ import java.util.ArrayList;
 import java.util.List;
 @Service
 public class RuleRelationServiceImpl implements RuleRelationService {
-    @Autowired
     RuleRelationMapper ruleRelationMapper;
+
+    public RuleRelationServiceImpl(RuleRelationMapper ruleRelationMapper) {
+        this.ruleRelationMapper = ruleRelationMapper;
+    }
+
     @Override
     public List<RuleRelation> treeList() {
         List<RuleRelation> ruleRelationList = ruleRelationMapper.selectPruleNum(0);
         List<RuleRelation> selectNotPruleNum = ruleRelationMapper.selectNotPruleNum();
+        for (RuleRelation ruleRelations : selectNotPruleNum) {
+            List<RuleRelation> relations = iterateRuleRelation(selectNotPruleNum, ruleRelations.getRuleNum());
+            ruleRelations.setMenu(relations);
+        }
         for (RuleRelation ruleRelation : ruleRelationList) {
             List<RuleRelation> relations = iterateRuleRelation(selectNotPruleNum, ruleRelation.getRuleNum());
             ruleRelation.setMenu(relations);
         }
         return ruleRelationList;
     }
-
+    //循环遍历其余的菜单，看看是否有其他的二级菜单等一次循环下去。返回二级菜单或者或者三级菜单，返回给处理父菜单的逻辑。进行循环遍历。
     public List<RuleRelation> iterateRuleRelation(List<RuleRelation> ruleRelationVoList, String pNum) {
         ArrayList<RuleRelation> result = new ArrayList<>();
         for (RuleRelation ruleRelation : ruleRelationVoList) {
