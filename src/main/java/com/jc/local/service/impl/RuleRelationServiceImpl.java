@@ -4,7 +4,6 @@ import com.jc.local.entity.ruleEntity.RuleRelation;
 import com.jc.local.mapper.RuleRelationMapper;
 import com.jc.local.service.RuleRelationService;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
