@@ -2,6 +2,7 @@ package com.jc.local.controller;
 
 import com.jc.local.entity.DeviceTag;
 import com.jc.local.mapper.DeviceTagMapper;
+import com.jc.local.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -24,10 +25,10 @@ public class DeviceTagWeb {
 
     @GetMapping("/list")
     @ApiOperation(value = "查询所有设备标签", notes = "查询所有设备标签")
-    public List<DeviceTag> list() {
+    public Response<List<DeviceTag>> list() {
         try {
             List<DeviceTag> list = deviceTagMapper.selectAll();
-            return list;
+            return Response.success(list);
         } catch (Exception exception) {
             log.error("查询所有设备标签", exception);
             throw exception;
@@ -86,10 +87,10 @@ public class DeviceTagWeb {
     @GetMapping("byId/{id}")
     @ApiOperation(value = "根据id查询设备标签", notes = "根据id查询设备标签")
     @ApiImplicitParam(name = "id", value = "设备标签id", dataType = "int")
-    public DeviceTag getById(@PathVariable Integer id) {
+    public Response<DeviceTag> getById(@PathVariable Integer id) {
         try {
             DeviceTag byId = deviceTagMapper.getById(id);
-            return byId;
+            return Response.success(byId);
         } catch (Exception exception) {
             log.error("根据id查询设备标签", exception);
             throw exception;

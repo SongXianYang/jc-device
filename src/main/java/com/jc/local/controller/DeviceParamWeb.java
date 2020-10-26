@@ -10,6 +10,7 @@ import com.jc.local.http.HttpAPIService;
 import com.jc.local.mapper.DeviceMapper;
 import com.jc.local.mapper.DeviceParamMapper;
 import com.jc.local.service.DeviceParamService;
+import com.jc.local.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -57,10 +58,10 @@ public class DeviceParamWeb {
 
     @GetMapping("/list")
     @ApiOperation(value = "查询所有设备参数", notes = "查询所有设备参数")
-    public List<DeviceParam> list() {
+    public Response<List<DeviceParam>> list() {
         try {
             List<DeviceParam> list = deviceParamMapper.selectAll();
-            return list;
+            return Response.success(list);
         } catch (Exception exception) {
             log.error("查询所有设备参数", exception);
             throw exception;
@@ -134,11 +135,12 @@ public class DeviceParamWeb {
     @GetMapping("byId/{id}")
     @ApiOperation(value = "根据id查询设备参数", notes = "根据id查询设备参数")
     @ApiImplicitParam(name = "id", value = "设备参数id", dataType = "int")
-    public DeviceParam getById(@PathVariable Integer id) {
+    public Response<DeviceParam> getById(@PathVariable Integer id) {
         try {
             DeviceParam byId = deviceParamMapper.getById(id);
-            return byId;
+            return Response.success(byId);
         } catch (Exception exception) {
+
             log.error("根据id查询设备参数", exception);
             throw exception;
         }

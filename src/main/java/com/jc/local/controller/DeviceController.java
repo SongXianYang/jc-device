@@ -231,7 +231,7 @@ public class DeviceController {
     //添加设备最终版（同时插入设备参数与输出）
     @PostMapping("insertAll/{mid}")
     @ApiImplicitParam(name = "mid", value = "设备型号id", dataType = "int")
-    @ApiOperation(value = "添加设备最终版（同时插入设备参数与输出）", notes = "添加设备最终版（同时插入设备参数与输出）")
+    @ApiOperation(value = "添加设备（同时插入设备参数与输出）", notes = "添加设备（同时插入设备参数与输出）")
     public String insertAll(@PathVariable Integer mid) throws Exception {
         Device device = new Device();
         String number = NumberUtils.createNumberKey();
@@ -278,16 +278,15 @@ public class DeviceController {
                 deviceParam.setValue(param.getMDefault());//赋值参数值
                 deviceParamMapper.save(deviceParam);
             }
+            int result = deviceService.save(device);
+            if (result >= 1) {
+                return "添加成功";
+            } else {
+                return "添加失败";
+            }
         } catch (Exception exception) {
             log.error("添加设备" ,exception);
             throw exception;
-        }
-
-        int result = deviceService.save(device);
-        if (result >= 1) {
-            return "添加成功";
-        } else {
-            return "添加失败";
         }
 
     }
@@ -295,10 +294,10 @@ public class DeviceController {
     @GetMapping("/numberJoinOutPutJoinParamList/{number}")
     @ApiImplicitParam(name = "number", value = "设备编号number", dataType = "String")
     @ApiOperation(value = "根据设备编号查询关联的参数表与输出表", notes = "根据设备编号查询关联的参数表与输出表")
-    public List<Device> numberJoinOutPutJoinParamList(@PathVariable String number) {
+    public Response<List<Device>> numberJoinOutPutJoinParamList(@PathVariable String number) {
         try {
             List<Device> list = deviceMapper.numberJoinOutPutJoinParamList(number);
-            return list;
+            return Response.success(list);
         } catch (Exception exception) {
             log.error("根据设备编号查询关联的参数表与输出表", exception);
             throw exception;

@@ -11,6 +11,7 @@ import com.jc.local.http.HttpResult;
 import com.jc.local.mapper.DeviceMapper;
 import com.jc.local.mapper.DeviceRuleChainMapper;
 import com.jc.local.service.DeviceRuleChainService;
+import com.jc.local.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -57,10 +58,10 @@ public class DeviceRuleChainWeb {
 
     @GetMapping("/list")
     @ApiOperation(value = "查询所有设备规则链", notes = "查询所有设备规则链")
-    public List<DeviceRuleChain> list() {
+    public Response<List<DeviceRuleChain>> list() {
         try {
             List<DeviceRuleChain> list = deviceRuleChainMapper.selectAll();
-            return list;
+            return Response.success(list);
         } catch (Exception exception) {
             log.error("查询所有设备规则链", exception);
             throw exception;
@@ -120,10 +121,10 @@ public class DeviceRuleChainWeb {
     @GetMapping("byId/{id}")
     @ApiOperation(value = "根据id查询设备规则链", notes = "根据id查询设备规则链")
     @ApiImplicitParam(name = "id", value = "设备规则链id", dataType = "int")
-    public DeviceRuleChain getById(@PathVariable Integer id) {
+    public Response<DeviceRuleChain> getById(@PathVariable Integer id) {
         try {
             DeviceRuleChain byId = deviceRuleChainMapper.getById(id);
-            return byId;
+            return Response.success(byId);
         } catch (Exception exception) {
             log.error("根据id查询设备规则链", exception);
             throw exception;
@@ -137,9 +138,8 @@ public class DeviceRuleChainWeb {
             @ApiImplicitParam(name = "cid", value = "规则链id", dataType = "Integer"),
             @ApiImplicitParam(name = "did", value = "设备id", dataType = "Integer")
     })
-    @ApiOperation(value = "使用httpclient获取规则链编号", notes = "使用httpclient获取规则链编号")
+    @ApiOperation(value = "使用httpclient获取规则链编号添加设备规则链", notes = "使用httpclient获取规则链编号添加设备规则链")
     public String chainNumber(@PathVariable Integer cid, @PathVariable Integer did) throws Exception {
-
         //获取设备编号
         Device device = deviceMapper.getById(did);
 
@@ -154,7 +154,6 @@ public class DeviceRuleChainWeb {
             ruleChain.setDeviceNum(device.getNumber());
             ruleChain.setChainNum(chain.getNumber());
             System.out.println(chain);
-
             int i = deviceRuleChainService.save(ruleChain);
             if (i >= 1) {
                 return "插入规则链编号与设备编号成功!!";
@@ -163,7 +162,7 @@ public class DeviceRuleChainWeb {
             }
 
         } catch (Exception exception) {
-            log.error("使用httpclient获取规则链编号", exception);
+            log.error("使用httpclient获取规则链编号添加设备规则链", exception);
             throw exception;
         }
 

@@ -7,6 +7,7 @@ import com.jc.local.mapper.DeviceGroupMapper;
 import com.jc.local.mapper.DeviceMapper;
 import com.jc.local.mapper.GroupsMapper;
 import com.jc.local.dto.GroupAndDeviceDTO;
+import com.jc.local.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -38,10 +39,10 @@ public class DeviceGroupController {
 
     @GetMapping("list")
     @ApiOperation(value = "查询所有设备分组", notes = "查询所有设备分组")
-    public List<DeviceGroup> selectAll() {
+    public Response<List<DeviceGroup>> selectAll() {
         try {
             List<DeviceGroup> list = deviceGroupMapper.selectAll();
-            return list;
+            return Response.success(list);
         } catch (Exception exception) {
             log.error("查询所有设备分组", exception);
             throw exception;
@@ -112,10 +113,10 @@ public class DeviceGroupController {
     @GetMapping("byId/{id}")
     @ApiOperation(value = "根据id查询设备分组", notes = "根据id查询设备分组")
     @ApiImplicitParam(name = "id", value = "设备id", dataType = "int")
-    public DeviceGroup getById(@PathVariable Integer id) {
+    public Response<DeviceGroup> getById(@PathVariable Integer id) {
         try {
             DeviceGroup byId = deviceGroupMapper.getById(id);
-            return byId;
+            return Response.success(byId);
         } catch (Exception exception) {
             log.error("根据id查询设备分组", exception);
             throw exception;
@@ -126,10 +127,10 @@ public class DeviceGroupController {
     @GetMapping("selectGroup/{groupNum}")
     @ApiOperation(value = "根据组编号查询设备", notes = "根据组编号查询设备")
     @ApiImplicitParam(name = "groupNum", value = "组编号", dataType = "String")
-    public List<GroupAndDeviceDTO> selectGroup(@PathVariable String groupNum) {
+    public Response<List<GroupAndDeviceDTO>> selectGroup(@PathVariable String groupNum) {
         try {
             List<GroupAndDeviceDTO> list = deviceGroupMapper.selectDeviceGroup(groupNum);
-            return list;
+            return Response.success(list);
         } catch (Exception exception) {
             log.error("根据组编号查询设备", exception);
             throw exception;

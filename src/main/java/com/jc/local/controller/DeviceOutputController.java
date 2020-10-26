@@ -11,6 +11,7 @@ import com.jc.local.http.HttpAPIService;
 import com.jc.local.mapper.DeviceMapper;
 import com.jc.local.mapper.DeviceOutputMapper;
 import com.jc.local.service.DeviceOutputService;
+import com.jc.local.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -27,6 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("DeviceOutput")
 public class DeviceOutputController {
+
     DeviceOutputMapper deviceOutputMapper;
 
     DeviceOutputService deviceOutputService;
@@ -54,10 +56,10 @@ public class DeviceOutputController {
 
     @GetMapping("list")
     @ApiOperation(value = "查询所有设备输出", notes = "查询所有设备输出")
-    public List<DeviceOutput> selectAll() {
+    public Response<List<DeviceOutput>> selectAll() {
         try {
             List<DeviceOutput> list = deviceOutputMapper.selectAll();
-            return list;
+            return Response.success(list);
         } catch (Exception exception) {
             log.error("查询所有设备输出", exception);
             throw exception;
@@ -133,10 +135,10 @@ public class DeviceOutputController {
     @GetMapping("byId/{id}")
     @ApiOperation(value = "根据id查询设备输出", notes = "根据id查询设备输出")
     @ApiImplicitParam(name = "id", value = "设备id", dataType = "int")
-    public DeviceOutput getById(@PathVariable Integer id) {
+    public Response<DeviceOutput> getById(@PathVariable Integer id) {
         try {
             DeviceOutput byId = deviceOutputMapper.getById(id);
-            return byId;
+            return Response.success(byId);
         } catch (Exception exception) {
             log.error("根据id查询设备输出", exception);
             throw exception;

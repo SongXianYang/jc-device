@@ -3,6 +3,7 @@ package com.jc.local.controller;
 import com.jc.local.entity.Groups;
 import com.jc.local.mapper.GroupsMapper;
 import com.jc.local.utils.NumberUtils;
+import com.jc.local.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -26,10 +27,10 @@ public class GroupsWeb {
 
     @GetMapping("/list")
     @ApiOperation(value = "查询所有设备组", notes = "查询所有设备组")
-    public List<Groups> list() {
+    public Response<List<Groups>> list() {
         try {
             List<Groups> list = groupsMapper.selectAll();
-            return list;
+            return Response.success(list);
         } catch (Exception exception) {
             log.error("查询所有设备组", exception);
             throw exception;
@@ -89,10 +90,10 @@ public class GroupsWeb {
     @GetMapping("byId/{id}")
     @ApiOperation(value = "根据id查询设备组", notes = "根据id查询设备组")
     @ApiImplicitParam(name = "id", value = "设备组id", dataType = "int")
-    public Groups getById(@PathVariable Integer id) {
+    public Response<Groups> getById(@PathVariable Integer id) {
         try {
             Groups byId = groupsMapper.getById(id);
-            return byId;
+            return Response.success(byId);
         } catch (Exception exception) {
             log.error("根据id查询设备组", exception);
             throw exception;
