@@ -20,12 +20,16 @@ public class RuleRelationServiceImpl implements RuleRelationService {
 
     @Override
     public List<RuleRelation> treeList() {
+        //查询规则关系表 父编号
         List<RuleRelation> ruleRelationList = ruleRelationMapper.selectPruleNum(0);
+        //   其余编号
         List<RuleRelation> selectNotPruleNum = ruleRelationMapper.selectNotPruleNum();
+        //循环遍历其余编号看看是否有2级或者3级菜单
         for (RuleRelation ruleRelations : selectNotPruleNum) {
             List<RuleRelation> relations = iterateRuleRelation(selectNotPruleNum, ruleRelations.getRuleNum());
             ruleRelations.setMenu(relations);
         }
+        //循环遍历父编号
         for (RuleRelation ruleRelation : ruleRelationList) {
             List<RuleRelation> relations = iterateRuleRelation(selectNotPruleNum, ruleRelation.getRuleNum());
             ruleRelation.setMenu(relations);
@@ -33,7 +37,7 @@ public class RuleRelationServiceImpl implements RuleRelationService {
         return ruleRelationList;
     }
 
-    //循环遍历其余的菜单，看看是否有其他的二级菜单等一次循环下去。返回二级菜单或者或者三级菜单，返回给处理父菜单的逻辑。进行循环遍历。
+    //循环遍历的编号父传到 iterateRuleRelation（）这个方法
     public List<RuleRelation> iterateRuleRelation(List<RuleRelation> ruleRelationVoList, String pNum) {
         ArrayList<RuleRelation> result = new ArrayList<>();
         for (RuleRelation ruleRelation : ruleRelationVoList) {
