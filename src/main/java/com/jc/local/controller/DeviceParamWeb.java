@@ -56,6 +56,10 @@ public class DeviceParamWeb {
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
     }
 
+    /**
+     * 查询所有设备参数
+     * @return
+     */
     @GetMapping("/list")
     @ApiOperation(value = "查询所有设备参数", notes = "查询所有设备参数")
     public Response<List<DeviceParam>> list() {
@@ -68,6 +72,11 @@ public class DeviceParamWeb {
         }
     }
 
+    /**
+     * 根据id删除设备参数
+     * @param id
+     * @return
+     */
     @DeleteMapping("deleteId/{id}")
     @ApiImplicitParam(name = "id", value = "设备参数id", required = true, dataType = "int")
     @ApiOperation(value = "根据id删除设备参数", notes = "根据id删除设备参数")
@@ -85,6 +94,13 @@ public class DeviceParamWeb {
         }
     }
 
+    /**
+     * 添加设备参数
+     * @param pid
+     * @param did
+     * @return
+     * @throws Exception
+     */
     @PostMapping("save/{pid}/{did}")
     @ApiOperation(value = "添加设备参数", notes = "添加设备参数")
     @ApiImplicitParams({
@@ -100,7 +116,7 @@ public class DeviceParamWeb {
             deviceParam.setDeviceNum(device.getNumber());
             deviceParam.setParamNum(modelParam.getNumber());
             deviceParam.setCode(modelParam.getCode());
-            deviceParam.setValue(modelParam.getMDefault());
+            deviceParam.setValue(modelParam.getMpDefault());
 
             int result = deviceParamMapper.save(deviceParam);
             if (result >= 1) {
@@ -116,6 +132,11 @@ public class DeviceParamWeb {
 
     }
 
+    /**
+     * 更新设备参数
+     * @param deviceParam
+     * @return
+     */
     @PutMapping("update")
     @ApiOperation(value = "更新设备参数", notes = "更新设备参数")
     public String update(DeviceParam deviceParam) {
@@ -132,6 +153,11 @@ public class DeviceParamWeb {
         }
     }
 
+    /**
+     * 根据id查询设备参数
+     * @param id
+     * @return
+     */
     @GetMapping("byId/{id}")
     @ApiOperation(value = "根据id查询设备参数", notes = "根据id查询设备参数")
     @ApiImplicitParam(name = "id", value = "设备参数id", dataType = "int")

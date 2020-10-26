@@ -37,6 +37,11 @@ public class DeviceGroupController {
         this.groupsMapper = groupsMapper;
     }
 
+    /**
+     * 查询所有设备分组
+     * @return
+     */
+
     @GetMapping("list")
     @ApiOperation(value = "查询所有设备分组", notes = "查询所有设备分组")
     public Response<List<DeviceGroup>> selectAll() {
@@ -49,6 +54,11 @@ public class DeviceGroupController {
         }
     }
 
+    /**
+     * 根据id删除设备分组
+     * @param id
+     * @return
+     */
     @DeleteMapping("deleteId/{id}")
     @ApiImplicitParam(name = "id", value = "设备id", required = true, dataType = "int")
     @ApiOperation(value = "根据id删除设备分组", notes = "根据id删除设备分组")
@@ -66,6 +76,12 @@ public class DeviceGroupController {
         }
     }
 
+    /**
+     * 添加设备分组
+     * @param did
+     * @param gid
+     * @return
+     */
     @PostMapping("save/{did}/{gid}")
     @ApiOperation(value = "添加设备分组", notes = "添加设备分组")
     @ApiImplicitParams({
@@ -94,6 +110,11 @@ public class DeviceGroupController {
         }
     }
 
+    /**
+     * 更新设备分组
+     * @param deviceGroup
+     * @return
+     */
     @PutMapping("update")
     @ApiOperation(value = "更新设备分组", notes = "更新设备分组")
     public String update(DeviceGroup deviceGroup) {
@@ -110,6 +131,11 @@ public class DeviceGroupController {
         }
     }
 
+    /**
+     * 根据id查询设备分组
+     * @param id
+     * @return
+     */
     @GetMapping("byId/{id}")
     @ApiOperation(value = "根据id查询设备分组", notes = "根据id查询设备分组")
     @ApiImplicitParam(name = "id", value = "设备id", dataType = "int")

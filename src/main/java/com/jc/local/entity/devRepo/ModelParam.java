@@ -39,8 +39,8 @@ public class ModelParam implements Serializable {
     /**
      * 默认值;参数默认值，多选用英文","分割
      */
-    @JsonProperty("mDefault")
-    private String mDefault;
+//    @JsonProperty("mpDefault")
+    private String mpDefault;
     /**
      * 参数描述;参数描述
      */

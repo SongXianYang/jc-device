@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-public  class DeviceRuleChainServiceImpl implements DeviceRuleChainService {
+public class DeviceRuleChainServiceImpl implements DeviceRuleChainService {
     DeviceRuleChainMapper deviceRuleChainMapper;
     HttpAPIService httpAPIService;
     DeviceMapper deviceMapper;

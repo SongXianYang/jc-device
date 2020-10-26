@@ -12,14 +12,19 @@ import java.util.List;
 public interface DeviceParamMapper {
     //查询所有设备参数
     List<DeviceParam> selectAll();
+
     //根据id查询单个用户设备参数
     DeviceParam getById(Integer id);
+
     //添加设备参数
     int save(DeviceParam deviceParam);
+
     //删除设备参数
     int deleteId(Integer id);
+
     //更新设备参数
     int update(DeviceParam deviceParam);
+
     //根据设备编号查询
     List<DeviceRuleChain> selectNumber(String deviceNum);
 

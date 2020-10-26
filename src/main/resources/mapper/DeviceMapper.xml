@@ -132,6 +132,7 @@
     </update>
 
     <delete id="deleteIds" parameterType="java.lang.Integer">
+--         select * from where 表名 in (value1,value2,…) 查询指定的的数据
         delete from device where ID in
         <foreach collection="list" open="(" close=")" separator="," index="index"  item="ids" >
             #{ids}

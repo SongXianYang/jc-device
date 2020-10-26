@@ -19,7 +19,7 @@ public interface RuleRelationMapper {
     @Select("select * from rule_relation where PRULE_NUM=#{pruleNum}")
     @Results(
             value = {
-                    @Result(id = true, column = "ID",property = "id"),
+                    @Result(id = true, column = "ID", property = "id"),
                     @Result(column = "NUMBER", property = "number"),
                     @Result(column = "PRULE_NUM", property = "pruleNum"),
                     @Result(column = "RULE_NUM", property = "ruleNum"),
@@ -38,7 +38,7 @@ public interface RuleRelationMapper {
     @Select("select * from rule_relation where PRULE_NUM != 0")
     @Results(
             value = {
-                    @Result(id = true, column = "ID",property = "id"),
+                    @Result(id = true, column = "ID", property = "id"),
                     @Result(column = "NUMBER", property = "number"),
                     @Result(column = "PRULE_NUM", property = "pruleNum"),
                     @Result(column = "RULE_NUM", property = "ruleNum"),

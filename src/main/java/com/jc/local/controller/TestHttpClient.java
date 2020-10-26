@@ -40,6 +40,11 @@ public class TestHttpClient {
         this.ruleRelationService = ruleRelationService;
     }
 
+    /**
+     * 测试APP请求功能是否正常
+     * @return
+     * @throws Exception
+     */
     @ApiOperation(value = "测试APP请求功能是否正常")
     @GetMapping(value = "http", produces = "application/json")
     public Response<String> test() throws Exception {
@@ -51,6 +56,11 @@ public class TestHttpClient {
         }
     }
 
+    /**
+     * 获取组数据
+     * @return
+     * @throws Exception
+     */
     @GetMapping("groups")
     public String getGroups() throws Exception {
         try {
@@ -62,6 +72,11 @@ public class TestHttpClient {
         }
     }
 
+    /**
+     * 根据id查询
+     * @param id
+     * @throws Exception
+     */
     @GetMapping("GroupById/{id}")
     @ApiImplicitParam(name = "id", value = "设备id", dataType = "Integer")
     public void GroupById(@PathVariable Integer id) throws Exception {
@@ -72,7 +87,13 @@ public class TestHttpClient {
         }
     }
 
-    //测试获取组表数据  然后插入到我的组表
+
+    /**
+     * 测试获取组表数据  然后插入到我的组表
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @PostMapping("groupAdd/{id}")
     @ApiImplicitParam(name = "id", value = "设备id", dataType = "Integer")
     public String groupAdd(@PathVariable Integer id) throws Exception {
@@ -96,12 +117,19 @@ public class TestHttpClient {
         }
 
     }
+
+    /**
+     * 测试树形菜单
+     * @return
+     */
     @GetMapping("treeList")
+    @ApiOperation(value = "测试树形菜单",notes = "测试树形菜单")
     public List<RuleRelation> treeList() {
         try {
             List<RuleRelation> list = ruleRelationService.treeList();
             return list;
         } catch (Exception exception) {
+            log.error("测试树形菜单",exception);
             throw exception;
         }
     }

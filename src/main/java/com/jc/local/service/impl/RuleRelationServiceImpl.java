@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class RuleRelationServiceImpl implements RuleRelationService {
     RuleRelationMapper ruleRelationMapper;
@@ -31,6 +32,7 @@ public class RuleRelationServiceImpl implements RuleRelationService {
         }
         return ruleRelationList;
     }
+
     //循环遍历其余的菜单，看看是否有其他的二级菜单等一次循环下去。返回二级菜单或者或者三级菜单，返回给处理父菜单的逻辑。进行循环遍历。
     public List<RuleRelation> iterateRuleRelation(List<RuleRelation> ruleRelationVoList, String pNum) {
         ArrayList<RuleRelation> result = new ArrayList<>();

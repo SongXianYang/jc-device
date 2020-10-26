@@ -23,6 +23,10 @@ public class DeviceTagWeb {
         this.deviceTagMapper = deviceTagMapper;
     }
 
+    /**
+     * 查询所有设备标签
+     * @return
+     */
     @GetMapping("/list")
     @ApiOperation(value = "查询所有设备标签", notes = "查询所有设备标签")
     public Response<List<DeviceTag>> list() {
@@ -35,6 +39,11 @@ public class DeviceTagWeb {
         }
     }
 
+    /**
+     * 根据id删除设备标签
+     * @param id
+     * @return
+     */
     @DeleteMapping("deleteId/{id}")
     @ApiImplicitParam(name = "id", value = "设备标签id", required = true, dataType = "int")
     @ApiOperation(value = "根据id删除设备标签", notes = "根据id删除设备标签")
@@ -52,6 +61,11 @@ public class DeviceTagWeb {
         }
     }
 
+    /**
+     * 添加设备标签
+     * @param deviceTag
+     * @return
+     */
     @PostMapping("save")
     @ApiOperation(value = "添加设备标签", notes = "添加设备标签")
     public String save(DeviceTag deviceTag) {
@@ -68,6 +82,11 @@ public class DeviceTagWeb {
         }
     }
 
+    /**
+     * 更新设备标签
+     * @param deviceTag
+     * @return
+     */
     @PutMapping("update")
     @ApiOperation(value = "更新设备标签", notes = "更新设备标签")
     public String update(DeviceTag deviceTag) {
@@ -84,6 +103,11 @@ public class DeviceTagWeb {
         }
     }
 
+    /**
+     * 根据id查询设备标签
+     * @param id
+     * @return
+     */
     @GetMapping("byId/{id}")
     @ApiOperation(value = "根据id查询设备标签", notes = "根据id查询设备标签")
     @ApiImplicitParam(name = "id", value = "设备标签id", dataType = "int")

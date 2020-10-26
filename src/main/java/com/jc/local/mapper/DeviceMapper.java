@@ -26,7 +26,13 @@ public interface DeviceMapper {
     //更新设备
     int update(Device device);
 
-    //ids删除多个
+
+    /**
+     * ids删除多个
+     * 用List来接受参数，因为会传来多个 以逗号（，）隔开的字符串整数
+     * @param ids
+     * @return
+     */
     int deleteIds(List<Integer> ids);
 
     //设备启停
@@ -36,6 +42,7 @@ public interface DeviceMapper {
     List<Device> numberJoinOutPutJoinParamList(String number);
     List<DeviceOutput> selectOutput(String number);
     List<DeviceParam> selectParam(String number);
+
     //逻辑删除
     int idDelete(Integer id);
 }

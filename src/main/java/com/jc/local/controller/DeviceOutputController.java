@@ -54,6 +54,10 @@ public class DeviceOutputController {
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
     }
 
+    /**
+     * 查询所有设备输出
+     * @return
+     */
     @GetMapping("list")
     @ApiOperation(value = "查询所有设备输出", notes = "查询所有设备输出")
     public Response<List<DeviceOutput>> selectAll() {
@@ -66,6 +70,11 @@ public class DeviceOutputController {
         }
     }
 
+    /**
+     * 根据id删除设备输出
+     * @param id
+     * @return
+     */
     @DeleteMapping("deleteId/{id}")
     @ApiImplicitParam(name = "id",value = "设备id",required =true,dataType = "int")
     @ApiOperation(value = "根据id删除设备输出", notes = "根据id删除设备输出")
@@ -83,6 +92,12 @@ public class DeviceOutputController {
         }
     }
 
+    /**
+     * 添加设备输出
+     * @param oid
+     * @param did
+     * @return
+     */
     @PostMapping("save/{oid}/{did}")
     @ApiOperation(value = "添加设备输出", notes = "添加设备输出")
     @ApiImplicitParams({
@@ -116,6 +131,11 @@ public class DeviceOutputController {
         }
     }
 
+    /**
+     * 更新设备输出
+     * @param deviceOutput
+     * @return
+     */
     @PutMapping("update")
     @ApiOperation(value = "更新设备输出", notes = "更新设备输出")
     public String update(DeviceOutput deviceOutput) {
@@ -132,6 +152,11 @@ public class DeviceOutputController {
         }
     }
 
+    /**
+     * 根据id查询设备输出
+     * @param id
+     * @return
+     */
     @GetMapping("byId/{id}")
     @ApiOperation(value = "根据id查询设备输出", notes = "根据id查询设备输出")
     @ApiImplicitParam(name = "id", value = "设备id", dataType = "int")

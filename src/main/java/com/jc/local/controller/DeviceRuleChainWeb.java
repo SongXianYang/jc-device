@@ -56,6 +56,10 @@ public class DeviceRuleChainWeb {
         this.deviceRuleChainService = deviceRuleChainService;
     }
 
+    /**
+     * 查询所有设备规则链
+     * @return
+     */
     @GetMapping("/list")
     @ApiOperation(value = "查询所有设备规则链", notes = "查询所有设备规则链")
     public Response<List<DeviceRuleChain>> list() {
@@ -68,6 +72,11 @@ public class DeviceRuleChainWeb {
         }
     }
 
+    /**
+     * 根据id删除设备规则链
+     * @param id
+     * @return
+     */
     @DeleteMapping("deleteId/{id}")
     @ApiImplicitParam(name = "id", value = "设备规则链id", required = true, dataType = "int")
     @ApiOperation(value = "根据id删除设备规则链", notes = "根据id删除设备规则链")
@@ -86,6 +95,11 @@ public class DeviceRuleChainWeb {
 
     }
 
+    /**
+     * 添加设备规则链
+     * @param deviceRuleChain
+     * @return
+     */
     @PostMapping("save")
     @ApiOperation(value = "添加设备规则链", notes = "添加设备规则链")
     public String save(DeviceRuleChain deviceRuleChain) {
@@ -102,6 +116,11 @@ public class DeviceRuleChainWeb {
         }
     }
 
+    /**
+     * 更新设备规则链
+     * @param deviceRuleChain
+     * @return
+     */
     @PutMapping("update")
     @ApiOperation(value = "更新设备规则链", notes = "更新设备规则链")
     public String update(DeviceRuleChain deviceRuleChain) {
@@ -118,6 +137,11 @@ public class DeviceRuleChainWeb {
         }
     }
 
+    /**
+     * 根据id查询设备规则链
+     * @param id
+     * @return
+     */
     @GetMapping("byId/{id}")
     @ApiOperation(value = "根据id查询设备规则链", notes = "根据id查询设备规则链")
     @ApiImplicitParam(name = "id", value = "设备规则链id", dataType = "int")
@@ -131,14 +155,20 @@ public class DeviceRuleChainWeb {
         }
     }
 
-
+    /**
+     * 使用httpclient添加设备规则链
+     * @param cid
+     * @param did
+     * @return
+     * @throws Exception
+     */
     //用httpclient获取规则编号
     @PostMapping("chainNumber/{cid}/{did}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "cid", value = "规则链id", dataType = "Integer"),
             @ApiImplicitParam(name = "did", value = "设备id", dataType = "Integer")
     })
-    @ApiOperation(value = "使用httpclient获取规则链编号添加设备规则链", notes = "使用httpclient获取规则链编号添加设备规则链")
+    @ApiOperation(value = "使用httpclient添加设备规则链", notes = "使用httpclient添加设备规则链")
     public String chainNumber(@PathVariable Integer cid, @PathVariable Integer did) throws Exception {
         //获取设备编号
         Device device = deviceMapper.getById(did);
@@ -148,6 +178,7 @@ public class DeviceRuleChainWeb {
         try {
 
             String result = httpAPIService.doGet("http://192.168.0.27:8080/ruleChain/selectRuleChain/" + cid);
+
             //json转换成对象
             Chain chain = mapper.readValue(result, Chain.class);
             System.out.println(chain);
@@ -162,7 +193,7 @@ public class DeviceRuleChainWeb {
             }
 
         } catch (Exception exception) {
-            log.error("使用httpclient获取规则链编号添加设备规则链", exception);
+            log.error("使用httpclient添加设备规则链", exception);
             throw exception;
         }
 

@@ -62,6 +62,16 @@ public class DeviceController {
         this.httpAPIService = httpAPIService;
     }
 
+    /**
+     * objectMapper,将Java对象转化为json字符串、json字符串转换成Java对象、
+     * 对象<=>数组
+     * List<=>json字符串
+     * Map<=>json字符串
+     *
+     *
+     * 在这里主要用的是：json字符串转换成Java对象
+     */
+
     public static ObjectMapper mapper = new ObjectMapper();
 
     static {
@@ -73,18 +83,32 @@ public class DeviceController {
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
     }
 
+    /**
+     * 查询所有设备
+     *  Response  简单的一个响应类
+     *  每一个controller接口都用try{}catch{}进行异常捕获
+     * @return list
+     */
     @GetMapping("/list")
     @ApiOperation(value = "查询所有设备", notes = "查询所有设备")
     public Response<List<Device>> list() {
         try {
             List<Device> list = deviceService.selectAll();
             return Response.success(list);
-        } catch (Exception exception) {
-            log.error("查询所有设备", exception);
-            throw exception;
+        } catch (Exception e) {
+            log.error("查询所有设备", e);
+            throw e;
         }
     }
 
+    /**
+     * 根据id删除设备
+     *
+     * @PathVariable  这个注解  在访问接口的时候通过斜杠（/）传参
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("deleteId/{id}")
     @ApiImplicitParam(name = "id", value = "设备id", required = true, dataType = "int")
     @ApiOperation(value = "根据id删除设备", notes = "根据id删除设备")
@@ -102,36 +126,11 @@ public class DeviceController {
         }
     }
 
-//    @PostMapping("save/{mid}")
-//    @ApiImplicitParam(name = "mid", value = "设备型号id", dataType = "int")
-//    @ApiOperation(value = "添加设备", notes = "添加设备")
-//    public String save(@PathVariable int mid) throws Exception {
-//        Device device = new Device();
-//        try {
-//            String number = NumberUtils.createNumberKey();
-//            device.setNumber(number);
-//            String s = httpAPIService.doGet("http://192.168.0.25:8888/model/selectOne/" + mid);
-//            //获取型号编号对象
-//            Model models = mapper.readValue(s, Model.class);
-//            System.out.println(models);
-//            device.setDmNum(models.getNumber());
-//            device.setName(models.getName());
-//            device.setDevSn(models.getManuNum() + models.getNumber());
-//            device.setIsDel("0");
-//
-//            int result = deviceService.save(device);
-//            if (result >= 1) {
-//                return "添加成功";
-//            } else {
-//                return "添加失败";
-//            }
-//
-//        } catch (Exception exception) {
-//            log.error("添加设备", exception);
-//            throw exception;
-//        }
-//    }
-
+    /**
+     * 更新设备
+     * @param device
+     * @return
+     */
     @PutMapping("update")
     @ApiOperation(value = "更新设备", notes = "更新设备")
     public String update(Device device) {
@@ -148,6 +147,11 @@ public class DeviceController {
         }
     }
 
+    /**
+     * 根据id查询设备
+     * @param id
+     * @return
+     */
     @GetMapping("byId/{id}")
     @ApiOperation(value = "根据id查询设备", notes = "根据id查询设备")
     @ApiImplicitParam(name = "id", value = "设备id", dataType = "int")
@@ -161,14 +165,24 @@ public class DeviceController {
         }
     }
 
+    /**
+     * 根据ids进行批量删除
+     * @param pdId
+     * @return
+     */
     @DeleteMapping("deleteIds/{ids}")
     @ApiOperation(value = "根据ids进行批量删除", notes = "根据ids进行批量删除")
     @ApiImplicitParam(name = "ids", value = "设备ids", dataType = "List<Integer>")
     public String deleteIds(@PathVariable("ids") String pdId) {
         try {
+            //将参数pdId使用正则split（）去分割字符串，以逗号隔开
             String[] pdIds = pdId.split(",");
+            //创建建一个list集合
             ArrayList<Integer> ids = new ArrayList<>();
+            //循环遍历数组中的数据
             for (String str : pdIds) {
+                // parseInt 方法得到的原始数据类型的一个特定的字符串 ，十进制字符串形式
+                //然后放进List集合中
                 ids.add(Integer.parseInt(str));
             }
             int result = deviceMapper.deleteIds(ids);
@@ -177,17 +191,24 @@ public class DeviceController {
             } else {
                 return "批量删除失败";
             }
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             log.error("根据ids进行批量删除",e);
             throw e;
         }
     }
 
+    /**
+     * 设备启动
+     * @param id
+     * @return
+     */
+
     @PutMapping("start/{id}")
     @ApiOperation(value = "设备启动", notes = "设备启动")
     @ApiImplicitParam(name = "id", value = "设备id", dataType = "int")
-    public String start(@PathVariable int id) {
+    public String start(@PathVariable("id") int id) {
         try {
+            //update 更新设备状态
             deviceService.state(id, "1");
             return "启动成功";
         } catch (Exception exception) {
@@ -196,6 +217,11 @@ public class DeviceController {
         }
     }
 
+    /**
+     * 设备停止
+     * @param id
+     * @return
+     */
     @PutMapping("stop/{id}")
     @ApiOperation(value = "设备停止", notes = "设备停止")
     @ApiImplicitParam(name = "id", value = "停止设备id", dataType = "int")
@@ -210,12 +236,17 @@ public class DeviceController {
     }
 
 
-    //物理删除
+    /**
+     * 设备逻辑删除
+     * @param id
+     * @return
+     */
     @PutMapping("idDelete/{id}")
     @ApiImplicitParam(name = "id", value = "设备编号", dataType = "Integer")
     @ApiOperation(value = "设备逻辑删除", notes = "设备逻辑删除")
     public String idDelete(@PathVariable Integer id) {
         try {
+            //sql语句直接写死（update）
             int i = deviceMapper.idDelete(id);
             if (i >= 1) {
                 return "逻辑删除成功";
@@ -228,17 +259,31 @@ public class DeviceController {
         }
     }
 
-    //添加设备最终版（同时插入设备参数与输出）
+    /**
+     * 添加设备（同时插入设备参数与输出）
+     * 说明：在插入一台设备时，从设备库中同步两个表的数据（参数表、输出表）
+     * @param mid
+     * @return
+     * @throws Exception
+     */
     @PostMapping("insertAll/{mid}")
     @ApiImplicitParam(name = "mid", value = "设备型号id", dataType = "int")
     @ApiOperation(value = "添加设备（同时插入设备参数与输出）", notes = "添加设备（同时插入设备参数与输出）")
     public String insertAll(@PathVariable Integer mid) throws Exception {
+        //先获取设备对象
         Device device = new Device();
+        //一个随机数的工具类
         String number = NumberUtils.createNumberKey();
         try {
+            //设置编号，由工具类生成。
             device.setNumber(number);
+            //使用httpAPIService对象去获取doGet方法，拿到IP地址为:192.168.0.25服务传来当前设备型号mid的json字符串
             String s = httpAPIService.doGet("http://192.168.0.25:8888/model/selectOne/" + mid);
             //获取型号编号对象
+            /**
+             *将json字符串转换成Java对象 （readValue）使用这个方法
+             * 属性赋值
+             */
             Model models = mapper.readValue(s, Model.class);
             device.setDmNum(models.getNumber());
             device.setName(models.getName());
@@ -246,23 +291,27 @@ public class DeviceController {
             device.setIsDel("0");
 
             /**
-             * 在输出表中插入：设备编号
+             * 在输出表中插入：设备编号、元数据编号、数据编码
              */
             DeviceOutput deviceOutput = new DeviceOutput();
             deviceOutput.setDeviceNum(number);
-            //利用型号编号查询
+            //利用设备型号id
             String s1 = httpAPIService
                     .doGet("http://192.168.0.25:8888/modeloutput/selectOutputByModelId?mid=" + mid);
+            /**
+             * 当前服务192.168.0.25:8888，传过来的是一个list集合。
+             * 需要用 ModelOutput【】数组对象来接受集合
+             * 然后循环遍历数组中的集合
+             */
             ModelOutput[] modelOutput =  mapper.readValue(s1, ModelOutput[].class);//输出表对象
-
             for (ModelOutput output : modelOutput) {
                 //赋值：元数据编号
                 deviceOutput.setMetaNum(output.getNumber());
                 //赋值；数据编码
                 deviceOutput.setCode(output.getOutputCode());
                 deviceOutputMapper.save(deviceOutput);
-                System.out.println(deviceOutput);
             }
+
             /**
              * 在参数表中插入：设备编号、参数编号、参数编码、参数值
              */
@@ -275,7 +324,7 @@ public class DeviceController {
             for (ModelParam param : modelParam) {
                 deviceParam.setParamNum(param.getNumber());//赋值参数码
                 deviceParam.setCode(param.getCode());//赋值参数码
-                deviceParam.setValue(param.getMDefault());//赋值参数值
+                deviceParam.setValue(param.getMpDefault());//赋值参数值
                 deviceParamMapper.save(deviceParam);
             }
             int result = deviceService.save(device);
@@ -290,7 +339,12 @@ public class DeviceController {
         }
 
     }
-    //一台设备对一个规则
+
+    /**
+     * 根据设备编号查询关联的参数表与输出表信息
+     * @param number
+     * @return
+     */
     @GetMapping("/numberJoinOutPutJoinParamList/{number}")
     @ApiImplicitParam(name = "number", value = "设备编号number", dataType = "String")
     @ApiOperation(value = "根据设备编号查询关联的参数表与输出表", notes = "根据设备编号查询关联的参数表与输出表")

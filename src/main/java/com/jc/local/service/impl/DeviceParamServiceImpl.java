@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 @Service
 public class DeviceParamServiceImpl implements DeviceParamService {
     public static ObjectMapper mapper = new ObjectMapper();
+
     static {
         // 转换为格式化的json
         mapper.enable(SerializationFeature.INDENT_OUTPUT);

@@ -26,6 +26,10 @@ public class GroupsWeb {
         this.groupsMapper = groupsMapper;
     }
 
+    /**
+     * 查询所有设备组
+     * @return
+     */
     @GetMapping("/list")
     @ApiOperation(value = "查询所有设备组", notes = "查询所有设备组")
     public Response<List<Groups>> list() {
@@ -38,6 +42,11 @@ public class GroupsWeb {
         }
     }
 
+    /**
+     * 根据id删除设备组
+     * @param id
+     * @return
+     */
     @DeleteMapping("deleteId/{id}")
     @ApiImplicitParam(name = "id", value = "设备组id", required = true, dataType = "int")
     @ApiOperation(value = "根据id删除设备组", notes = "根据id删除设备组")
@@ -55,6 +64,11 @@ public class GroupsWeb {
         }
     }
 
+    /**
+     * 添加设备组
+     * @param groups
+     * @return
+     */
     @PostMapping("save")
     @ApiOperation(value = "添加设备组", notes = "添加设备组")
     public String save(Groups groups) {
@@ -72,6 +86,11 @@ public class GroupsWeb {
         }
     }
 
+    /**
+     * 更新设备组
+     * @param groups
+     * @return
+     */
     @PutMapping("update")
     @ApiOperation(value = "更新设备组", notes = "更新设备组")
     public String update(Groups groups) {
@@ -88,6 +107,11 @@ public class GroupsWeb {
         }
     }
 
+    /**
+     * 根据id查询设备组
+     * @param id
+     * @return
+     */
     @GetMapping("byId/{id}")
     @ApiOperation(value = "根据id查询设备组", notes = "根据id查询设备组")
     @ApiImplicitParam(name = "id", value = "设备组id", dataType = "int")
@@ -101,7 +125,11 @@ public class GroupsWeb {
         }
     }
 
-    //    根据组名称查询设备
+    /**
+     * 根据组名称查询设备
+     * @param groupName
+     * @return
+     */
     @GetMapping("selectGroup/{groupName}")
     @ApiOperation(value = "根据组名称查询设备", notes = "根据组组名称查询设备")
     @ApiImplicitParam(name = "groupName", value = "组名称", dataType = "String")

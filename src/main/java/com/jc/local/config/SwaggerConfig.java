@@ -20,7 +20,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())        //这个方法的作用（生成接口的时候页面显示的信息）
                 .select()         //表示的是选择那些路径和API生成文档
-                .apis(RequestHandlerSelectors.basePackage("com.jc.local.controller"))           //告诉他要扫描的接口存在的这个包
+                .apis(RequestHandlerSelectors.basePackage("com.jc.local.controller")) //告诉他要扫描的接口存在的这个包
                 .paths(PathSelectors.any())          //对所有的API进行监控
                 .build();         //构建
     }
