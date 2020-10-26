@@ -14,16 +14,19 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
+
 //设备参数
 @RestController
 @RequestMapping("DeviceParam")
 @Api(tags = "设备参数接口")
+@Slf4j
 public class DeviceParamWeb {
 
     DeviceParamMapper deviceParamMapper;
@@ -42,6 +45,7 @@ public class DeviceParamWeb {
     }
 
     public static ObjectMapper mapper = new ObjectMapper();
+
     static {
         // 转换为格式化的json
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
@@ -54,19 +58,29 @@ public class DeviceParamWeb {
     @GetMapping("/list")
     @ApiOperation(value = "查询所有设备参数", notes = "查询所有设备参数")
     public List<DeviceParam> list() {
-        List<DeviceParam> list = deviceParamMapper.selectAll();
-        return list;
+        try {
+            List<DeviceParam> list = deviceParamMapper.selectAll();
+            return list;
+        } catch (Exception exception) {
+            log.error("查询所有设备参数", exception);
+            throw exception;
+        }
     }
 
     @DeleteMapping("deleteId/{id}")
     @ApiImplicitParam(name = "id", value = "设备参数id", required = true, dataType = "int")
     @ApiOperation(value = "根据id删除设备参数", notes = "根据id删除设备参数")
     public String deleteId(@PathVariable int id) {
-        int result = deviceParamMapper.deleteId(id);
-        if (result >= 1) {
-            return "删除成功！";
-        } else {
-            return "删除失败！";
+        try {
+            int result = deviceParamMapper.deleteId(id);
+            if (result >= 1) {
+                return "删除成功！";
+            } else {
+                return "删除失败！";
+            }
+        } catch (Exception exception) {
+            log.error("根据id删除设备参数", exception);
+            throw exception;
         }
     }
 
@@ -76,7 +90,7 @@ public class DeviceParamWeb {
             @ApiImplicitParam(name = "pid", value = "参数id", dataType = "Integer"),
             @ApiImplicitParam(name = "did", value = "设备id", dataType = "Integer")
     })
-    public String save(@PathVariable Integer pid,@PathVariable Integer did) {
+    public String save(@PathVariable Integer pid, @PathVariable Integer did) throws Exception {
         DeviceParam deviceParam = new DeviceParam();
         try {
             String s = httpAPIService.doGet("http://192.168.0.25:8888/modelparam/selectOne/" + pid);
@@ -86,27 +100,34 @@ public class DeviceParamWeb {
             deviceParam.setParamNum(modelParam.getNumber());
             deviceParam.setCode(modelParam.getCode());
             deviceParam.setValue(modelParam.getMDefault());
+
+            int result = deviceParamMapper.save(deviceParam);
+            if (result >= 1) {
+                return "添加成功";
+            } else {
+                return "添加失败";
+            }
         } catch (Exception exception) {
-            exception.printStackTrace();
+            log.error("添加设备参数", exception);
+            throw exception;
         }
 
 
-        int result = deviceParamMapper.save(deviceParam);
-        if (result >= 1) {
-            return "添加成功";
-        } else {
-            return "添加失败";
-        }
     }
 
     @PutMapping("update")
     @ApiOperation(value = "更新设备参数", notes = "更新设备参数")
     public String update(DeviceParam deviceParam) {
-        int result = deviceParamMapper.update(deviceParam);
-        if (result >= 1) {
-            return "更新成功";
-        } else {
-            return "更新失败";
+        try {
+            int result = deviceParamMapper.update(deviceParam);
+            if (result >= 1) {
+                return "更新成功";
+            } else {
+                return "更新失败";
+            }
+        } catch (Exception exception) {
+            log.error("更新设备参数", exception);
+            throw exception;
         }
     }
 
@@ -114,8 +135,13 @@ public class DeviceParamWeb {
     @ApiOperation(value = "根据id查询设备参数", notes = "根据id查询设备参数")
     @ApiImplicitParam(name = "id", value = "设备参数id", dataType = "int")
     public DeviceParam getById(@PathVariable Integer id) {
-        DeviceParam byId = deviceParamMapper.getById(id);
-        return byId;
+        try {
+            DeviceParam byId = deviceParamMapper.getById(id);
+            return byId;
+        } catch (Exception exception) {
+            log.error("根据id查询设备参数", exception);
+            throw exception;
+        }
     }
 
 }

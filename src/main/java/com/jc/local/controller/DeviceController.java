@@ -71,12 +71,6 @@ public class DeviceController {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         //修改日期格式
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-
-//        TypeFactory typeFactory = mapper.getTypeFactory();
-//        CollectionType collectionType = typeFactory.constructCollectionType(
-//                List.class, Location.class);
-//        InputStream inputStream = new InputStream();
-//        return mapper.readValue(inputStream, collectionType);
     }
 
     @GetMapping("/list")
@@ -171,16 +165,21 @@ public class DeviceController {
     @ApiOperation(value = "根据ids进行批量删除", notes = "根据ids进行批量删除")
     @ApiImplicitParam(name = "ids", value = "设备ids", dataType = "List<Integer>")
     public String deleteIds(@PathVariable("ids") String pdId) {
-        String[] pdIds = pdId.split(",");
-        ArrayList<Integer> ids = new ArrayList<>();
-        for (String str : pdIds) {
-            ids.add(Integer.parseInt(str));
-        }
-        int result = deviceMapper.deleteIds(ids);
-        if (result >= 1) {
-            return "批量删除成功！！";
-        } else {
-            return "批量删除失败";
+        try {
+            String[] pdIds = pdId.split(",");
+            ArrayList<Integer> ids = new ArrayList<>();
+            for (String str : pdIds) {
+                ids.add(Integer.parseInt(str));
+            }
+            int result = deviceMapper.deleteIds(ids);
+            if (result >= 1) {
+                return "批量删除成功！！";
+            } else {
+                return "批量删除失败";
+            }
+        } catch (NumberFormatException e) {
+            log.error("根据ids进行批量删除",e);
+            throw e;
         }
     }
 
@@ -188,55 +187,44 @@ public class DeviceController {
     @ApiOperation(value = "设备启动", notes = "设备启动")
     @ApiImplicitParam(name = "id", value = "设备id", dataType = "int")
     public String start(@PathVariable int id) {
-        deviceService.state(id, "1");
-        return "启动成功";
+        try {
+            deviceService.state(id, "1");
+            return "启动成功";
+        } catch (Exception exception) {
+            log.error("设备启动", exception);
+            throw exception;
+        }
     }
 
     @PutMapping("stop/{id}")
     @ApiOperation(value = "设备停止", notes = "设备停止")
     @ApiImplicitParam(name = "id", value = "停止设备id", dataType = "int")
     public String stop(@PathVariable int id) {
-        deviceService.state(id, "0");
-        return "停止成功";
+        try {
+            deviceService.state(id, "0");
+            return "停止成功";
+        } catch (Exception exception) {
+            log.error("设备停止", exception);
+            throw exception;
+        }
     }
 
-//    //关联设备输出 （一对多）
-//    @GetMapping("/deviceJoinDeviceOutput/{number}")
-//    @ApiImplicitParam(name = "number", value = "设备编号number", dataType = "String")
-//    @ApiOperation(value = "设备表与输出表 通过设备编号进行关联的数据", notes = "设备表与输出表 通过设备编号进行关联的数据")
-//    public List<Device> deviceJoinDeviceOutputList(@PathVariable String number) {
-//        List<Device> list = deviceMapper.deviceJoinDeviceOutputList(number);
-//        return list;
-//    }
-//
-//    //关联设备参数 （一对多）
-//    @GetMapping("/deviceJoinDeviceParamList/{number}")
-//    @ApiImplicitParam(name = "number", value = "设备编号number", dataType = "String")
-//    @ApiOperation(value = "设备表与参数表 通过设备编号进行关联的数据", notes = "设备表与参数表 通过设备编号进行关联的数据")
-//    public List<Device> deviceJoinDeviceParamList(@PathVariable String number) {
-//        List<Device> list = deviceMapper.deviceJoinDeviceParamList(number);
-//        return list;
-//    }
-//
-//    //一台设备对一个规则
-//    @GetMapping("/deviceJoinDeviceRule/{number}")
-//    @ApiImplicitParam(name = "number", value = "设备编号number", dataType = "String")
-//    @ApiOperation(value = "设备表与规则表 通过设备编号进行关联的数据", notes = "设备表与规则表 通过设备编号进行关联的数据")
-//    public Device deviceJoinDeviceRule(@PathVariable String number) {
-//        Device device = deviceMapper.deviceJoinDeviceRule(number);
-//        return device;
-//    }
 
     //物理删除
     @PutMapping("idDelete/{id}")
     @ApiImplicitParam(name = "id", value = "设备编号", dataType = "Integer")
     @ApiOperation(value = "设备逻辑删除", notes = "设备逻辑删除")
     public String idDelete(@PathVariable Integer id) {
-        int i = deviceMapper.idDelete(id);
-        if (i >= 1) {
-            return "逻辑删除成功";
-        } else {
-            return "逻辑删除失败";
+        try {
+            int i = deviceMapper.idDelete(id);
+            if (i >= 1) {
+                return "逻辑删除成功";
+            } else {
+                return "逻辑删除失败";
+            }
+        } catch (Exception exception) {
+            log.error("设备逻辑删除", exception);
+            throw exception;
         }
     }
 

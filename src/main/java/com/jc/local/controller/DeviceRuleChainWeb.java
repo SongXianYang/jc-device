@@ -15,6 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +24,12 @@ import java.util.List;
 
 //设备规则链链
 @Api(tags = "设备规则链接口")
+@Slf4j
 @RestController
 @RequestMapping("DeviceRuleChain")
 public class DeviceRuleChainWeb {
 
     DeviceRuleChainMapper deviceRuleChainMapper;
-
 
     HttpAPIService httpAPIService;
 
@@ -57,41 +58,62 @@ public class DeviceRuleChainWeb {
     @GetMapping("/list")
     @ApiOperation(value = "查询所有设备规则链", notes = "查询所有设备规则链")
     public List<DeviceRuleChain> list() {
-        List<DeviceRuleChain> list = deviceRuleChainMapper.selectAll();
-        return list;
+        try {
+            List<DeviceRuleChain> list = deviceRuleChainMapper.selectAll();
+            return list;
+        } catch (Exception exception) {
+            log.error("查询所有设备规则链", exception);
+            throw exception;
+        }
     }
 
     @DeleteMapping("deleteId/{id}")
     @ApiImplicitParam(name = "id", value = "设备规则链id", required = true, dataType = "int")
     @ApiOperation(value = "根据id删除设备规则链", notes = "根据id删除设备规则链")
     public String deleteId(@PathVariable int id) {
-        int result = deviceRuleChainMapper.deleteId(id);
-        if (result >= 1) {
-            return "删除成功！";
-        } else {
-            return "删除失败！";
+        try {
+            int result = deviceRuleChainMapper.deleteId(id);
+            if (result >= 1) {
+                return "删除成功！";
+            } else {
+                return "删除失败！";
+            }
+        } catch (Exception exception) {
+            log.error("根据id删除设备规则链", exception);
+            throw exception;
         }
+
     }
 
     @PostMapping("save")
     @ApiOperation(value = "添加设备规则链", notes = "添加设备规则链")
     public String save(DeviceRuleChain deviceRuleChain) {
-        int result = deviceRuleChainMapper.save(deviceRuleChain);
-        if (result >= 1) {
-            return "添加成功";
-        } else {
-            return "添加失败";
+        try {
+            int result = deviceRuleChainMapper.save(deviceRuleChain);
+            if (result >= 1) {
+                return "添加成功";
+            } else {
+                return "添加失败";
+            }
+        } catch (Exception exception) {
+            log.error("添加设备规则链", exception);
+            throw exception;
         }
     }
 
     @PutMapping("update")
     @ApiOperation(value = "更新设备规则链", notes = "更新设备规则链")
     public String update(DeviceRuleChain deviceRuleChain) {
-        int result = deviceRuleChainMapper.update(deviceRuleChain);
-        if (result >= 1) {
-            return "更新成功";
-        } else {
-            return "更新失败";
+        try {
+            int result = deviceRuleChainMapper.update(deviceRuleChain);
+            if (result >= 1) {
+                return "更新成功";
+            } else {
+                return "更新失败";
+            }
+        } catch (Exception exception) {
+            log.error("更新设备规则链", exception);
+            throw exception;
         }
     }
 
@@ -99,8 +121,13 @@ public class DeviceRuleChainWeb {
     @ApiOperation(value = "根据id查询设备规则链", notes = "根据id查询设备规则链")
     @ApiImplicitParam(name = "id", value = "设备规则链id", dataType = "int")
     public DeviceRuleChain getById(@PathVariable Integer id) {
-        DeviceRuleChain byId = deviceRuleChainMapper.getById(id);
-        return byId;
+        try {
+            DeviceRuleChain byId = deviceRuleChainMapper.getById(id);
+            return byId;
+        } catch (Exception exception) {
+            log.error("根据id查询设备规则链", exception);
+            throw exception;
+        }
     }
 
 
@@ -111,11 +138,10 @@ public class DeviceRuleChainWeb {
             @ApiImplicitParam(name = "did", value = "设备id", dataType = "Integer")
     })
     @ApiOperation(value = "使用httpclient获取规则链编号", notes = "使用httpclient获取规则链编号")
-    public String chainNumber(@PathVariable Integer cid, @PathVariable Integer did) {
+    public String chainNumber(@PathVariable Integer cid, @PathVariable Integer did) throws Exception {
 
         //获取设备编号
         Device device = deviceMapper.getById(did);
-
 
         DeviceRuleChain ruleChain = new DeviceRuleChain();
 
@@ -128,14 +154,18 @@ public class DeviceRuleChainWeb {
             ruleChain.setDeviceNum(device.getNumber());
             ruleChain.setChainNum(chain.getNumber());
             System.out.println(chain);
+
+            int i = deviceRuleChainService.save(ruleChain);
+            if (i >= 1) {
+                return "插入规则链编号与设备编号成功!!";
+            } else {
+                return "error";
+            }
+
         } catch (Exception exception) {
-            exception.printStackTrace();
+            log.error("使用httpclient获取规则链编号", exception);
+            throw exception;
         }
-        int i = deviceRuleChainService.save(ruleChain);
-        if (i >= 1) {
-            return "插入规则链编号与设备编号成功!!";
-        } else {
-            return "error";
-        }
+
     }
 }
