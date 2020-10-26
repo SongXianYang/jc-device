@@ -1,11 +1,15 @@
 package com.jc.local.controller;
 
 import com.jc.local.entity.Device;
+import com.jc.local.entity.DeviceGroup;
+import com.jc.local.entity.DeviceOutput;
 import com.jc.local.entity.Groups;
 import com.jc.local.entity.ruleEntity.RuleRelation;
 import com.jc.local.http.HttpAPIService;
 import com.jc.local.mapper.DeviceMapper;
 import com.jc.local.mapper.GroupsMapper;
+import com.jc.local.service.DeviceGroupService;
+import com.jc.local.service.DeviceOutputService;
 import com.jc.local.service.DeviceService;
 import com.jc.local.service.RuleRelationService;
 import com.jc.local.utils.Response;
@@ -32,6 +36,9 @@ public class TestHttpClient {
     DeviceMapper deviceMapper;
     RuleRelationService ruleRelationService;
 
+    @Autowired
+    DeviceGroupService deviceGroupService;
+
     public TestHttpClient(HttpAPIService httpAPIService, DeviceService deviceService, GroupsMapper groupsMapper, DeviceMapper deviceMapper, RuleRelationService ruleRelationService) {
         this.httpAPIService = httpAPIService;
         this.deviceService = deviceService;
@@ -42,6 +49,7 @@ public class TestHttpClient {
 
     /**
      * 测试APP请求功能是否正常
+     *
      * @return
      * @throws Exception
      */
@@ -58,6 +66,7 @@ public class TestHttpClient {
 
     /**
      * 获取组数据
+     *
      * @return
      * @throws Exception
      */
@@ -74,6 +83,7 @@ public class TestHttpClient {
 
     /**
      * 根据id查询
+     *
      * @param id
      * @throws Exception
      */
@@ -90,6 +100,7 @@ public class TestHttpClient {
 
     /**
      * 测试获取组表数据  然后插入到我的组表
+     *
      * @param id
      * @return
      * @throws Exception
@@ -120,17 +131,24 @@ public class TestHttpClient {
 
     /**
      * 测试树形菜单
+     *
      * @return
      */
     @GetMapping("treeList")
-    @ApiOperation(value = "测试树形菜单",notes = "测试树形菜单")
+    @ApiOperation(value = "测试树形菜单", notes = "测试树形菜单")
     public List<RuleRelation> treeList() {
         try {
             List<RuleRelation> list = ruleRelationService.treeList();
             return list;
         } catch (Exception exception) {
-            log.error("测试树形菜单",exception);
+            log.error("测试树形菜单", exception);
             throw exception;
         }
+    }
+
+    @GetMapping("test1")
+    @ApiOperation(value = "测试查询", notes = "测试查询")
+    public List<DeviceGroup> test1() {
+        return deviceGroupService.selectAll();
     }
 }
