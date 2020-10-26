@@ -123,17 +123,4 @@ public class DeviceGroupController {
         }
     }
 
-    //    根据组编号查询设备
-    @GetMapping("selectGroup/{groupNum}")
-    @ApiOperation(value = "根据组编号查询设备", notes = "根据组编号查询设备")
-    @ApiImplicitParam(name = "groupNum", value = "组编号", dataType = "String")
-    public Response<List<GroupAndDeviceDTO>> selectGroup(@PathVariable String groupNum) {
-        try {
-            List<GroupAndDeviceDTO> list = deviceGroupMapper.selectDeviceGroup(groupNum);
-            return Response.success(list);
-        } catch (Exception exception) {
-            log.error("根据组编号查询设备", exception);
-            throw exception;
-        }
-    }
 }

@@ -1,6 +1,7 @@
 package com.jc.local.mapper;
 
 
+import com.jc.local.dto.GroupAndDeviceDTO;
 import com.jc.local.entity.Groups;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
@@ -25,5 +26,7 @@ public interface GroupsMapper {
     //更新设备组
     int update(Groups groups);
 
+    //根据组名称查询设备
+    List<GroupAndDeviceDTO> selectDeviceGroup(String groupName);
 
 }

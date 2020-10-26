@@ -1,5 +1,6 @@
 package com.jc.local.controller;
 
+import com.jc.local.dto.GroupAndDeviceDTO;
 import com.jc.local.entity.Groups;
 import com.jc.local.mapper.GroupsMapper;
 import com.jc.local.utils.NumberUtils;
@@ -100,4 +101,17 @@ public class GroupsWeb {
         }
     }
 
+    //    根据组名称查询设备
+    @GetMapping("selectGroup/{groupName}")
+    @ApiOperation(value = "根据组名称查询设备", notes = "根据组组名称查询设备")
+    @ApiImplicitParam(name = "groupName", value = "组名称", dataType = "String")
+    public Response<List<GroupAndDeviceDTO>> selectGroup(@PathVariable String groupName) {
+        try {
+            List<GroupAndDeviceDTO> list = groupsMapper.selectDeviceGroup(groupName);
+            return Response.success(list);
+        } catch (Exception exception) {
+            log.error("根据组名称查询设备", exception);
+            throw exception;
+        }
+    }
 }

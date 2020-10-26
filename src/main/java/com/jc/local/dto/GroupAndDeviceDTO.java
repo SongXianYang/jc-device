@@ -7,6 +7,6 @@ import lombok.Data;
 public class GroupAndDeviceDTO {
     @IgnoreSwagger2Parameter
     private String dName;
-    @IgnoreSwagger2Parameter
-    private String gName;
+//    @IgnoreSwagger2Parameter
+//    private String gName;
 }

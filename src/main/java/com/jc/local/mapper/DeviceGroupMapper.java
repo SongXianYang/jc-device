@@ -31,7 +31,4 @@ public interface DeviceGroupMapper {
     //更新设备
     int update(DeviceGroup deviceGroup);
 
-    //根据组编号查询设备
-    List<GroupAndDeviceDTO> selectDeviceGroup(String groupNum);
-
 }

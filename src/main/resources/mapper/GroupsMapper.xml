@@ -45,4 +45,16 @@
           #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR},
           #{updatedTime,jdbcType=TIMESTAMP})
     </insert>
+
+    <select id="selectDeviceGroup" parameterType="String" resultType="com.jc.local.dto.GroupAndDeviceDTO">
+        SELECT
+	        d.`NAME` as dName
+        FROM
+        device_group g
+        INNER JOIN 	(select * FROM device) As d on g.DEVICE_NUM= d.NUMBER
+        INNER JOIN(select * from db_groups) AS gs on gs.NUMBER= g.GROUP_NUM
+
+        WHERE
+            	gs.NAME = #{groupName}
+    </select>
 </mapper>
