@@ -3,6 +3,7 @@ package com.jc.local.controller;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.jc.local.dto.ChainNumDTO;
 import com.jc.local.entity.*;
 import com.jc.local.entity.devRepo.Model;
 import com.jc.local.entity.devRepo.ModelOutput;
@@ -353,5 +354,13 @@ public class DeviceController {
             log.error("根据设备编号查询关联的参数表与输出表", exception);
             throw exception;
         }
+    }
+
+    @GetMapping("deviceNameJoinChainNumList/{deviceName}")
+    @ApiOperation(value = "根据设备名称查询多条规则链", notes = "根据设备名称查询多条规则链")
+    @ApiImplicitParam(name="deviceName",value = "设备名称",dataType = "String")
+    public Response<List<ChainNumDTO>> deviceNameJoinChainNumList(@PathVariable String deviceName) {
+        List<ChainNumDTO> chainNumDTOList = deviceService.deviceNameJoinChainNumList(deviceName);
+        return Response.success(chainNumDTOList);
     }
 }

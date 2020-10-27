@@ -114,12 +114,17 @@
         select * from device_output where DEVICE_NUM = #{number}
     </select>
 
-    <!--    <select id="selectRulechain" parameterType="java.lang.String" resultType="com.jc.local.entity.DeviceRuleChain" >-->
-    <!--        select * from device_rulechain where DEVICE_NUM = #{deviceNum}-->
-    <!--    </select>-->
-
     <select id="selectParam" parameterType="java.lang.String" resultType="com.jc.local.entity.DeviceParam">
         select * from device_param where DEVICE_NUM = #{number}
     </select>
 
+    <select id="deviceNameJoinChainNumList" parameterType="java.lang.String" resultType="com.jc.local.dto.ChainNumDTO">
+        SELECT
+            r.CHAIN_NUM as chainNumber
+        FROM
+            device d
+            INNER JOIN ( SELECT * FROM device_rulechain ) AS r ON d.NUMBER = r.DEVICE_NUM
+        WHERE
+            d.name = #{deviceName}
+     </select>
 </mapper>

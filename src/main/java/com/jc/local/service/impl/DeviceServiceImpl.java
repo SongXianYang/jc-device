@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.jc.local.config.ExceptionConfig;
+import com.jc.local.dto.ChainNumDTO;
 import com.jc.local.entity.Device;
 import com.jc.local.http.HttpAPIService;
 import com.jc.local.mapper.DeviceMapper;
@@ -56,6 +57,12 @@ public class DeviceServiceImpl implements DeviceService {
     @Transactional(rollbackFor = {RuntimeException.class,Error.class})
     public int save(Device device) {
         return deviceMapper.save(device);
+    }
+
+    @Override
+    public List<ChainNumDTO> deviceNameJoinChainNumList(String deviceName) {
+        List<ChainNumDTO> chainNumDTOList = deviceMapper.deviceNameJoinChainNumList(deviceName);
+        return chainNumDTOList;
     }
 
 

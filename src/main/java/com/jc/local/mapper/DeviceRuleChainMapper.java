@@ -23,6 +23,4 @@ public interface DeviceRuleChainMapper {
     //更新设备规则
     int update(DeviceRuleChain deviceRuleChain);
 
-    //根据设备编号查询
-    DeviceRuleChain selectNumber(String deviceNum);
 }
