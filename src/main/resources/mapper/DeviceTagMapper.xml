@@ -2,15 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jc.local.mapper.DeviceTagMapper">
     <resultMap id="BaseResultMap" type="com.jc.local.entity.DeviceTag">
-        <id column="ID" jdbcType="INTEGER" property="id" />
-        <result column="DEVICE_NUM" jdbcType="VARCHAR" property="deviceNum" />
-        <result column="TAG_CONTENT" jdbcType="VARCHAR" property="tagContent" />
-        <result column="IS_DEL" jdbcType="CHAR" property="isDel" />
-        <result column="OP_FLAG" jdbcType="CHAR" property="opFlag" />
-        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
-        <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime" />
-        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
-        <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime" />
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="DEVICE_NUM" jdbcType="VARCHAR" property="deviceNum"/>
+        <result column="TAG_CONTENT" jdbcType="VARCHAR" property="tagContent"/>
+        <result column="IS_DEL" jdbcType="CHAR" property="isDel"/>
+        <result column="OP_FLAG" jdbcType="CHAR" property="opFlag"/>
+        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy"/>
+        <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime"/>
     </resultMap>
     <select id="selectAll" resultMap="BaseResultMap">
         select * from device_tag

@@ -23,6 +23,8 @@ public class GroupServiceImpl implements GroupService {
     @Override
     @Transactional(rollbackFor = {RuntimeException.class, Error.class})
     public int save(Groups groups) {
-        return groupsMapper.save(groups);
+        int save = groupsMapper.save(groups);
+        return save;
+
     }
 }

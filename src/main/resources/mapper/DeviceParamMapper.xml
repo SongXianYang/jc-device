@@ -2,22 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jc.local.mapper.DeviceParamMapper">
     <resultMap id="BaseResultMap" type="com.jc.local.entity.DeviceParam">
-        <id column="ID" jdbcType="INTEGER" property="id" />
-        <result column="DEVICE_NUM" jdbcType="VARCHAR" property="deviceNum" />
-        <result column="PARAM_NUM" jdbcType="VARCHAR" property="paramNum" />
-        <result column="CODE" jdbcType="VARCHAR" property="code" />
-        <result column="VALUE" jdbcType="VARCHAR" property="value" />
-        <result column="IS_DEL" jdbcType="CHAR" property="isDel" />
-        <result column="OP_FLAG" jdbcType="CHAR" property="opFlag" />
-        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
-        <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime" />
-        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
-        <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime" />
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="DEVICE_NUM" jdbcType="VARCHAR" property="deviceNum"/>
+        <result column="PARAM_NUM" jdbcType="VARCHAR" property="paramNum"/>
+        <result column="CODE" jdbcType="VARCHAR" property="code"/>
+        <result column="VALUE" jdbcType="VARCHAR" property="value"/>
+        <result column="IS_DEL" jdbcType="CHAR" property="isDel"/>
+        <result column="OP_FLAG" jdbcType="CHAR" property="opFlag"/>
+        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy"/>
+        <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime"/>
     </resultMap>
     <select id="selectAll" resultMap="BaseResultMap">
         select * from device_param
     </select>
-    
+
     <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select * from device_param where ID=#{id}
     </select>
@@ -51,7 +51,7 @@
           #{updatedTime,jdbcType=TIMESTAMP})
     </insert>
 
-    <select id="selectNumber" parameterType="java.lang.String" resultMap="BaseResultMap" >
+    <select id="selectNumber" parameterType="java.lang.String" resultMap="BaseResultMap">
         select * from device_param where DEVICE_NUM = #{deviceNum}
     </select>
 

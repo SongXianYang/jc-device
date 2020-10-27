@@ -3,6 +3,7 @@ package com.jc.local.controller;
 import com.jc.local.dto.GroupAndDeviceDTO;
 import com.jc.local.entity.Groups;
 import com.jc.local.mapper.GroupsMapper;
+import com.jc.local.service.GroupService;
 import com.jc.local.utils.NumberUtils;
 import com.jc.local.utils.Response;
 import io.swagger.annotations.Api;
@@ -22,8 +23,11 @@ public class GroupsWeb {
 
     GroupsMapper groupsMapper;
 
-    public GroupsWeb(GroupsMapper groupsMapper) {
+    GroupService groupService;
+
+    public GroupsWeb(GroupsMapper groupsMapper, GroupService groupService) {
         this.groupsMapper = groupsMapper;
+        this.groupService = groupService;
     }
 
     /**
@@ -74,14 +78,14 @@ public class GroupsWeb {
     public String save(Groups groups) {
         try {
             groups.setNumber(NumberUtils.createNumberKey());
-            int result = groupsMapper.save(groups);
+            int result = groupService.save(groups);
             if (result >= 1) {
                 return "添加成功";
             } else {
                 return "添加失败";
             }
         } catch (Exception exception) {
-            log.error("添加设备组");
+            log.error("添加设备组",exception);
             throw exception;
         }
     }
