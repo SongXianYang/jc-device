@@ -1,6 +1,7 @@
 package com.jc.local.entity.devRepo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -8,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
+@ApiModel(value = "传感器设备型号信息表实体属性")
 public class Model implements Serializable {
     private Integer id;
     /**
