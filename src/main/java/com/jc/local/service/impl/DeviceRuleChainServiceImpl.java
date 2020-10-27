@@ -21,7 +21,7 @@ public class DeviceRuleChainServiceImpl implements DeviceRuleChainService {
         this.deviceMapper = deviceMapper;
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = {RuntimeException.class,Error.class})
     public int save(DeviceRuleChain deviceRuleChain) {
         return deviceRuleChainMapper.save(deviceRuleChain);
     }

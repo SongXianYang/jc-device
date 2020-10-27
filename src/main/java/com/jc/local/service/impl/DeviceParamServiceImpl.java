@@ -8,6 +8,7 @@ import com.jc.local.mapper.DeviceParamMapper;
 import com.jc.local.service.DeviceParamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 
@@ -31,6 +32,7 @@ public class DeviceParamServiceImpl implements DeviceParamService {
     }
 
     @Override
+    @Transactional(rollbackFor = {RuntimeException.class,Error.class})
     public int save(DeviceParam deviceParam) {
         return deviceParamMapper.save(deviceParam);
     }

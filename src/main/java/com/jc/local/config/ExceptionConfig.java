@@ -22,7 +22,7 @@ public class ExceptionConfig {
      */
     @ExceptionHandler(Exception.class)
     public <T> Response<T> exceptionHandler(Exception e,HttpServletRequest httpServletRequest) {
-        log.error("调用了异常",httpServletRequest.getRequestURL() );
+        log.error("发生了异常",httpServletRequest.getRequestURL() );
         return Response.failure(e.getMessage());
     }
 }

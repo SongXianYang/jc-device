@@ -38,12 +38,14 @@ public class RuleRelationServiceImpl implements RuleRelationService {
 
     //循环遍历的编号父传到 iterateRuleRelation（）这个方法
     public List<RuleRelation> iterateRuleRelation(List<RuleRelation> ruleRelationVoList, String pNum) {
+
         ArrayList<RuleRelation> result = new ArrayList<>();
         for (RuleRelation ruleRelation : ruleRelationVoList) {
             //获取编号
             String ruleNum = ruleRelation.getRuleNum();
             //获取父编号
             String pruleNum = ruleRelation.getPruleNum();
+            //判断某pruleNum是否不为空且长度不为0且不由空白符(whitespace)构成“ ”
             if (StringUtils.isNotBlank(pruleNum)) {
                 if (pruleNum.equals(pNum)) {
                     //递归查询当前子菜单的子菜单

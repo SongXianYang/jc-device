@@ -6,6 +6,7 @@ import com.jc.local.mapper.DeviceGroupMapper;
 import com.jc.local.service.DeviceGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,5 +23,11 @@ public class DeviceGroupServiceImpl implements DeviceGroupService {
     public List<DeviceGroup> selectAll() {
         List<DeviceGroup> list = deviceGroupMapper.selectAll();
         return list;
+    }
+
+    @Override
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
+    public int save(DeviceGroup deviceGroup) {
+        return deviceGroupMapper.save(deviceGroup);
     }
 }

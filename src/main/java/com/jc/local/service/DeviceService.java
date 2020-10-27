@@ -2,7 +2,6 @@ package com.jc.local.service;
 
 import com.jc.local.entity.Device;
 
-
 import java.util.List;
 
 public interface DeviceService {

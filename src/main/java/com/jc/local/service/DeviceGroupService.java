@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface DeviceGroupService {
     List<DeviceGroup> selectAll();
+    int save(DeviceGroup deviceGroup);
 }

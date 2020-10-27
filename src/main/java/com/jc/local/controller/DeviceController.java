@@ -67,8 +67,6 @@ public class DeviceController {
      * 对象<=>数组
      * List<=>json字符串
      * Map<=>json字符串
-     *
-     *
      * 在这里主要用的是：json字符串转换成Java对象
      */
 
@@ -105,7 +103,6 @@ public class DeviceController {
      * 根据id删除设备
      *
      * @PathVariable  这个注解  在访问接口的时候通过斜杠（/）传参
-     *
      * @param id
      * @return
      */

@@ -3,11 +3,13 @@ package com.jc.local.service.impl;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.jc.local.config.ExceptionConfig;
 import com.jc.local.entity.Device;
 import com.jc.local.http.HttpAPIService;
 import com.jc.local.mapper.DeviceMapper;
 import com.jc.local.service.DeviceService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -47,6 +49,11 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    /**
+     * rollbackFor 触发回滚的异常，默认是RuntimeException和Error
+     * 不加   事务回滚失败，数据可以正常插入。可以自定义异常
+     */
+    @Transactional(rollbackFor = {RuntimeException.class,Error.class})
     public int save(Device device) {
         return deviceMapper.save(device);
     }
