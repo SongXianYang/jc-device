@@ -26,7 +26,7 @@ import java.util.List;
 //设备参数
 @RestController
 @RequestMapping("DeviceParam")
-@Api(tags = "设备参数接口")
+@Api(tags = "设备参数")
 @Slf4j
 public class DeviceParamWeb {
 

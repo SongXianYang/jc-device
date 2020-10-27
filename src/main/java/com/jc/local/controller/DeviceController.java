@@ -27,7 +27,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("device")
-@Api(tags = "设备接口")
+@Api(tags = "设备")
 public class DeviceController {
 
     DeviceService deviceService;
@@ -90,7 +90,7 @@ public class DeviceController {
      */
     @GetMapping("/list")
     @ApiOperation(value = "查询所有设备", notes = "查询所有设备")
-    public Response<List<Device>> list() {
+    public Response<List<Device>> selectAll() {
         try {
             List<Device> list = deviceService.selectAll();
             return Response.success(list);
@@ -240,7 +240,7 @@ public class DeviceController {
      * @return
      */
     @PutMapping("idDelete/{id}")
-    @ApiImplicitParam(name = "id", value = "设备编号", dataType = "Integer")
+    @ApiImplicitParam(name = "id", value = "设备id", dataType = "Integer")
     @ApiOperation(value = "设备逻辑删除", notes = "设备逻辑删除")
     public String idDelete(@PathVariable Integer id) {
         try {
@@ -357,10 +357,15 @@ public class DeviceController {
     }
 
     @GetMapping("deviceNameJoinChainNumList/{deviceName}")
-    @ApiOperation(value = "根据设备名称查询多条规则链", notes = "根据设备名称查询多条规则链")
+    @ApiOperation(value = "根据设备名称查询对应规则链", notes = "根据设备名称查询对应规则链")
     @ApiImplicitParam(name="deviceName",value = "设备名称",dataType = "String")
     public Response<List<ChainNumDTO>> deviceNameJoinChainNumList(@PathVariable String deviceName) {
-        List<ChainNumDTO> chainNumDTOList = deviceService.deviceNameJoinChainNumList(deviceName);
-        return Response.success(chainNumDTOList);
+        try {
+            List<ChainNumDTO> chainNumDTOList = deviceService.deviceNameJoinChainNumList(deviceName);
+            return Response.success(chainNumDTOList);
+        } catch (Exception e) {
+            log.error("根据设备名称查询对应规则链",e);
+            throw e;
+        }
     }
 }

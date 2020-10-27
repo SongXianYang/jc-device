@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 //设备组
-@Api(tags = "组接口")
+@Api(tags = "组")
 @Slf4j
 @RestController
 @RequestMapping("Groups")

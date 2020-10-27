@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 //设备输出
-@Api(tags = "设备输出接口")
+@Api(tags = "设备输出")
 @Slf4j
 @RestController
 @RequestMapping("DeviceOutput")

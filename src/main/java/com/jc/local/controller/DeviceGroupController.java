@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 //设备分组
-@Api(tags = "设备分组接口")
+@Api(tags = "设备分组")
 @RestController
 @RequestMapping("DeviceGroup")
 @Slf4j

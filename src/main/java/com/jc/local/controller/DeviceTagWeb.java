@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 //设备标签
-@Api(tags = "设备标签接口")
+@Api(tags = "设备标签")
 @Slf4j
 @RestController
 @RequestMapping("DeviceTag")

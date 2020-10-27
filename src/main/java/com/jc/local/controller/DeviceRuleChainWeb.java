@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 //设备规则链链
-@Api(tags = "设备规则链接口")
+@Api(tags = "设备规则链")
 @Slf4j
 @RestController
 @RequestMapping("DeviceRuleChain")
