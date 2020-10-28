@@ -86,7 +86,7 @@ public class DeviceParamWeb {
             if (result >= 1) {
                 return "删除成功！";
             } else {
-                return "删除失败！";
+                return "您输入的设备参数id可能已经被其他管理员删除，请换种姿势输入哦！";
             }
         } catch (Exception exception) {
             log.error("根据id删除设备参数", exception);

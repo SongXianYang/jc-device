@@ -117,7 +117,7 @@ public class DeviceController {
             if (result >= 1) {
                 return "删除成功！";
             } else {
-                return "删除失败！";
+                return "您输入的设备id可能已经被其他管理员删除，请换种姿势输入哦！";
             }
         } catch (Exception exception) {
             log.error("根据id删除设备", exception);
@@ -370,6 +370,12 @@ public class DeviceController {
         }
     }
 
+    /**
+     * 根据设备名称查询对应规则链
+     * @param deviceName
+     * @return
+     */
+
     @GetMapping("deviceNameJoinChainNumList/{deviceName}")
     @ApiOperation(value = "根据设备名称查询对应规则链", notes = "根据设备名称查询对应规则链")
     @ApiImplicitParam(name = "deviceName", value = "设备名称", dataType = "String")
@@ -383,6 +389,11 @@ public class DeviceController {
         }
     }
 
+    /**
+     * 根据设备编号删除设备及该设备输出表数据和参数表数据
+     * @param deviceNumber
+     * @return
+     */
     @DeleteMapping("deleteDeviceNumberJoinOutputJoinParam/{deviceNumber}")
     @ApiOperation(value = "根据设备编号删除设备及该设备输出表数据和参数表数据",
             notes = "根据设备编号删除设备及该设备输出表数据和参数表数据")

@@ -76,7 +76,7 @@ public class DeviceOutputController {
      * @return
      */
     @DeleteMapping("deleteId/{id}")
-    @ApiImplicitParam(name = "id",value = "设备id",required =true,dataType = "int")
+    @ApiImplicitParam(name = "id",value = "设备输出id",required =true,dataType = "int")
     @ApiOperation(value = "根据id删除设备输出", notes = "根据id删除设备输出")
     public String deleteId(@PathVariable int id) {
         try {
@@ -84,7 +84,7 @@ public class DeviceOutputController {
             if (result >= 1) {
                 return "删除成功！";
             } else {
-                return "删除失败！";
+                return "您输入的设备id可能已经被其他管理员删除，请换种姿势输入哦！";
             }
         } catch (Exception exception) {
             log.error("根据id删除设备输出", exception);
