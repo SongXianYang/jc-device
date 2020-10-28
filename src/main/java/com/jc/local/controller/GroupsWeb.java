@@ -33,7 +33,7 @@ public class GroupsWeb {
      * 查询所有组
      * @return
      */
-    @GetMapping("/list")
+    @GetMapping(value = "/list",produces="application/json;charset=UTF-8")
     @ApiOperation(value = "查询所有组", notes = "查询所有组")
     public Response<List<Groups>> list() {
         try {
@@ -115,7 +115,7 @@ public class GroupsWeb {
      * @param id
      * @return
      */
-    @GetMapping("byId/{id}")
+    @GetMapping(value = "byId/{id}",produces="application/json;charset=UTF-8")
     @ApiOperation(value = "根据id查询组", notes = "根据id查询组")
     @ApiImplicitParam(name = "id", value = "组id", dataType = "int")
     public Response<Groups> getById(@PathVariable Integer id) {
@@ -138,7 +138,7 @@ public class GroupsWeb {
      * @param groupName
      * @return
      */
-    @GetMapping("selectGroup/{groupName}")
+    @GetMapping(value = "selectGroup/{groupName}",produces="application/json;charset=UTF-8")
     @ApiOperation(value = "根据组名称查询设备", notes = "根据组组名称查询设备")
     @ApiImplicitParam(name = "groupName", value = "组名称", dataType = "String")
     public Response<List<GroupAndDeviceDTO>> selectGroup(@PathVariable String groupName) {

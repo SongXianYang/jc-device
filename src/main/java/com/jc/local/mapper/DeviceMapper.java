@@ -55,4 +55,6 @@ public interface DeviceMapper {
 
     //根据设备编号删除设备及该设备输出表数据和参数表数据
     int deleteDeviceNumberJoinOutputJoinParam(String deviceNumber);
+
+    List<Device> pageFindAll();
 }

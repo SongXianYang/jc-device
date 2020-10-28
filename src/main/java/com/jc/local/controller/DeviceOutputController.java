@@ -58,7 +58,7 @@ public class DeviceOutputController {
      * 查询所有设备输出
      * @return
      */
-    @GetMapping("list")
+    @GetMapping(value = "list",produces="application/json;charset=UTF-8")
     @ApiOperation(value = "查询所有设备输出", notes = "查询所有设备输出")
     public Response<List<DeviceOutput>> selectAll() {
         try {
@@ -157,7 +157,7 @@ public class DeviceOutputController {
      * @param id
      * @return
      */
-    @GetMapping("byId/{id}")
+    @GetMapping(value = "byId/{id}",produces="application/json;charset=UTF-8")
     @ApiOperation(value = "根据id查询设备输出", notes = "根据id查询设备输出")
     @ApiImplicitParam(name = "id", value = "设备id", dataType = "int")
     public Response<DeviceOutput> getById(@PathVariable Integer id) {

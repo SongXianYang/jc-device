@@ -40,4 +40,11 @@ http:
 
   staleConnectionCheckEnabled: true
 
+#pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
 

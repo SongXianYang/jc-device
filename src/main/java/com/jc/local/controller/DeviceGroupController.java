@@ -42,7 +42,7 @@ public class DeviceGroupController {
      * @return
      */
 
-    @GetMapping("list")
+    @GetMapping(value = "list",produces="application/json;charset=UTF-8")
     @ApiOperation(value = "查询所有设备分组", notes = "查询所有设备分组")
     public Response<List<DeviceGroup>> selectAll() {
         try {
@@ -136,7 +136,7 @@ public class DeviceGroupController {
      * @param id
      * @return
      */
-    @GetMapping("byId/{id}")
+    @GetMapping(value = "byId/{id}",produces="application/json;charset=UTF-8")
     @ApiOperation(value = "根据id查询设备分组", notes = "根据id查询设备分组")
     @ApiImplicitParam(name = "id", value = "设备分组id", dataType = "int")
     public Response<DeviceGroup> getById(@PathVariable Integer id) {

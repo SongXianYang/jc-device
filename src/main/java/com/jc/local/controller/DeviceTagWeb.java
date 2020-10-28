@@ -27,7 +27,7 @@ public class DeviceTagWeb {
      * 查询所有设备标签
      * @return
      */
-    @GetMapping("/list")
+    @GetMapping(value = "/list",produces="application/json;charset=UTF-8")
     @ApiOperation(value = "查询所有设备标签", notes = "查询所有设备标签")
     public Response<List<DeviceTag>> list() {
         try {
@@ -108,7 +108,7 @@ public class DeviceTagWeb {
      * @param id
      * @return
      */
-    @GetMapping("byId/{id}")
+    @GetMapping(value = "byId/{id}",produces="application/json;charset=UTF-8")
     @ApiOperation(value = "根据id查询设备标签", notes = "根据id查询设备标签")
     @ApiImplicitParam(name = "id", value = "设备标签id", dataType = "int")
     public Response<DeviceTag> getById(@PathVariable Integer id) {

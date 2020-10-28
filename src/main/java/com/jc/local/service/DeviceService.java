@@ -1,5 +1,7 @@
 package com.jc.local.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jc.local.dto.ChainNumDTO;
 import com.jc.local.entity.Device;
 
@@ -18,4 +20,7 @@ public interface DeviceService {
 
     //根据设备编号删除设备及该设备输出表数据和参数表数据
     int deleteDeviceNumberJoinOutputJoinParam(String deviceNumber);
+
+    //分页查询设备每页显示2条数据
+    PageInfo<Device> pageFindAll(int pageNum, int pageSize);
 }

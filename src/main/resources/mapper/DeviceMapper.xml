@@ -154,4 +154,8 @@
         WHERE
             d.NUMBER = #{deviceNumber}
     </delete>
+
+    <select id="pageFindAll" resultMap="BaseResultMap">
+        select * from device
+    </select>
 </mapper>

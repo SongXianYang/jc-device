@@ -3,6 +3,8 @@ package com.jc.local.service.impl;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jc.local.dto.ChainNumDTO;
 import com.jc.local.entity.Device;
 import com.jc.local.http.HttpAPIService;
@@ -68,6 +70,18 @@ public class DeviceServiceImpl implements DeviceService {
     public int deleteDeviceNumberJoinOutputJoinParam(String deviceNumber) {
         int count = deviceMapper.deleteDeviceNumberJoinOutputJoinParam(deviceNumber);
         return count;
+    }
+
+    @Override
+    public PageInfo<Device> pageFindAll(int pageNum, int pageSize) {
+        //这个分页方法（PageHelper）继承PageMethod 拿到startPage这个静态方法
+        PageHelper.startPage(pageNum, pageSize);
+        //获取当前所有数据
+        List<Device> deviceList = deviceMapper.pageFindAll();
+        //将返回的内容放到 PageInfo中
+        PageInfo<Device> page = new PageInfo<>(deviceList);
+        //返回出去
+        return page;
     }
 
 

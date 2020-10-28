@@ -3,6 +3,7 @@ package com.jc.local.controller;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.github.pagehelper.PageInfo;
 import com.jc.local.dto.ChainNumDTO;
 import com.jc.local.entity.*;
 import com.jc.local.entity.devRepo.Model;
@@ -89,7 +90,7 @@ public class DeviceController {
      *
      * @return list
      */
-    @GetMapping("/list")
+    @GetMapping(value = "/list", produces = "application/json;charset=UTF-8")
     @ApiOperation(value = "查询所有设备", notes = "查询所有设备")
     public Response<List<Device>> selectAll() {
         try {
@@ -153,7 +154,7 @@ public class DeviceController {
      * @param id
      * @return
      */
-    @GetMapping("byId/{id}")
+    @GetMapping(value = "byId/{id}", produces = "application/json;charset=UTF-8")
     @ApiOperation(value = "根据id查询设备", notes = "根据id查询设备")
     @ApiImplicitParam(name = "id", value = "设备id", dataType = "int")
     public Response<Device> getById(@PathVariable Integer id) {
@@ -357,7 +358,7 @@ public class DeviceController {
      * @param number
      * @return
      */
-    @GetMapping("/numberJoinOutPutJoinParamList/{number}")
+    @GetMapping(value = "/numberJoinOutPutJoinParamList/{number}", produces = "application/json;charset=UTF-8")
     @ApiImplicitParam(name = "number", value = "设备编号number", dataType = "String")
     @ApiOperation(value = "根据设备编号查询关联的参数表与输出表", notes = "根据设备编号查询关联的参数表与输出表")
     public Response<List<Device>> numberJoinOutPutJoinParamList(@PathVariable String number) {
@@ -372,11 +373,12 @@ public class DeviceController {
 
     /**
      * 根据设备名称查询对应规则链
+     *
      * @param deviceName
      * @return
      */
 
-    @GetMapping("deviceNameJoinChainNumList/{deviceName}")
+    @GetMapping(value = "deviceNameJoinChainNumList/{deviceName}", produces = "application/json;charset=UTF-8")
     @ApiOperation(value = "根据设备名称查询对应规则链", notes = "根据设备名称查询对应规则链")
     @ApiImplicitParam(name = "deviceName", value = "设备名称", dataType = "String")
     public Response<List<ChainNumDTO>> deviceNameJoinChainNumList(@PathVariable String deviceName) {
@@ -391,6 +393,7 @@ public class DeviceController {
 
     /**
      * 根据设备编号删除设备及该设备输出表数据和参数表数据
+     *
      * @param deviceNumber
      * @return
      */
@@ -408,6 +411,24 @@ public class DeviceController {
             }
         } catch (Exception e) {
             log.error("根据设备编号删除设备及该设备输出表数据和参数表数据", e);
+            throw e;
+        }
+    }
+
+    /**
+     * 分页查询设备每页显示2条数据
+     * @param pageNum
+     * @return
+     */
+    @GetMapping(value = "pageFindAll/{pageNum}", produces = "application/json;charset=UTF-8")
+    @ApiOperation(value ="分页查询设备每页显示2条数据",notes = "分页查询设备每页显示2条数据")
+    @ApiImplicitParam(name = "pageNum",value = "第几页开始",dataType = "int")
+    public PageInfo<Device> pageFindAll(@PathVariable int pageNum) {
+        try {
+            PageInfo<Device> pageInfo = deviceService.pageFindAll(pageNum, 2);
+            return pageInfo;
+        } catch (Exception e) {
+            log.error("分页查询设备每页显示2条数据", e);
             throw e;
         }
     }

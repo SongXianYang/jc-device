@@ -60,7 +60,7 @@ public class DeviceParamWeb {
      * 查询所有设备参数
      * @return
      */
-    @GetMapping("/list")
+    @GetMapping(value = "/list",produces="application/json;charset=UTF-8")
     @ApiOperation(value = "查询所有设备参数", notes = "查询所有设备参数")
     public Response<List<DeviceParam>> list() {
         try {
@@ -158,7 +158,7 @@ public class DeviceParamWeb {
      * @param id
      * @return
      */
-    @GetMapping("byId/{id}")
+    @GetMapping(value = "byId/{id}",produces="application/json;charset=UTF-8")
     @ApiOperation(value = "根据id查询设备参数", notes = "根据id查询设备参数")
     @ApiImplicitParam(name = "id", value = "设备参数id", dataType = "int")
     public Response<DeviceParam> getById(@PathVariable Integer id) {

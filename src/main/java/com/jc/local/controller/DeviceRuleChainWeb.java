@@ -60,7 +60,7 @@ public class DeviceRuleChainWeb {
      * 查询所有设备规则链
      * @return
      */
-    @GetMapping("/list")
+    @GetMapping(value = "/list",produces="application/json;charset=UTF-8")
     @ApiOperation(value = "查询所有设备规则链", notes = "查询所有设备规则链")
     public Response<List<DeviceRuleChain>> list() {
         try {
@@ -142,7 +142,7 @@ public class DeviceRuleChainWeb {
      * @param id
      * @return
      */
-    @GetMapping("byId/{id}")
+    @GetMapping(value = "byId/{id}",produces="application/json;charset=UTF-8")
     @ApiOperation(value = "根据id查询设备规则链", notes = "根据id查询设备规则链")
     @ApiImplicitParam(name = "id", value = "设备规则链id", dataType = "int")
     public Response<DeviceRuleChain> getById(@PathVariable Integer id) {
