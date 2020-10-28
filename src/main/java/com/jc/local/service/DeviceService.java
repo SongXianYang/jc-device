@@ -15,4 +15,7 @@ public interface DeviceService {
 
     //根据设备名称查询多条规则链
     List<ChainNumDTO> deviceNameJoinChainNumList(String deviceName);
+
+    //根据设备编号删除设备及该设备输出表数据和参数表数据
+    int deleteDeviceNumberJoinOutputJoinParam(String deviceNumber);
 }

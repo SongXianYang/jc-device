@@ -84,8 +84,9 @@ public class DeviceController {
 
     /**
      * 查询所有设备
-     *  Response  简单的一个响应类
-     *  每一个controller接口都用try{}catch{}进行异常捕获
+     * Response  简单的一个响应类
+     * 每一个controller接口都用try{}catch{}进行异常捕获
+     *
      * @return list
      */
     @GetMapping("/list")
@@ -103,9 +104,9 @@ public class DeviceController {
     /**
      * 根据id删除设备
      *
-     * @PathVariable  这个注解  在访问接口的时候通过斜杠（/）传参
      * @param id
      * @return
+     * @PathVariable 这个注解  在访问接口的时候通过斜杠（/）传参
      */
     @DeleteMapping("deleteId/{id}")
     @ApiImplicitParam(name = "id", value = "设备id", required = true, dataType = "int")
@@ -126,6 +127,7 @@ public class DeviceController {
 
     /**
      * 更新设备
+     *
      * @param device
      * @return
      */
@@ -147,6 +149,7 @@ public class DeviceController {
 
     /**
      * 根据id查询设备
+     *
      * @param id
      * @return
      */
@@ -170,6 +173,7 @@ public class DeviceController {
 
     /**
      * 根据ids进行批量删除
+     *
      * @param pdId
      * @return
      */
@@ -195,13 +199,14 @@ public class DeviceController {
                 return "批量删除失败";
             }
         } catch (Exception e) {
-            log.error("根据ids进行批量删除",e);
+            log.error("根据ids进行批量删除", e);
             throw e;
         }
     }
 
     /**
      * 设备启动
+     *
      * @param id
      * @return
      */
@@ -222,6 +227,7 @@ public class DeviceController {
 
     /**
      * 设备停止
+     *
      * @param id
      * @return
      */
@@ -241,6 +247,7 @@ public class DeviceController {
 
     /**
      * 设备逻辑删除
+     *
      * @param id
      * @return
      */
@@ -265,6 +272,7 @@ public class DeviceController {
     /**
      * 添加设备（同时插入设备参数与输出）
      * 说明：在插入一台设备时，从设备库中同步两个表的数据（参数表、输出表）
+     *
      * @param mid
      * @return
      * @throws Exception
@@ -306,7 +314,7 @@ public class DeviceController {
              * 需要用 ModelOutput【】数组对象来接受集合
              * 然后循环遍历数组中的集合
              */
-            ModelOutput[] modelOutput =  mapper.readValue(s1, ModelOutput[].class);//输出表对象
+            ModelOutput[] modelOutput = mapper.readValue(s1, ModelOutput[].class);//输出表对象
             for (ModelOutput output : modelOutput) {
                 //赋值：元数据编号
                 deviceOutput.setMetaNum(output.getNumber());
@@ -337,7 +345,7 @@ public class DeviceController {
                 return "添加失败";
             }
         } catch (Exception exception) {
-            log.error("添加设备" ,exception);
+            log.error("添加设备", exception);
             throw exception;
         }
 
@@ -345,6 +353,7 @@ public class DeviceController {
 
     /**
      * 根据设备编号查询关联的参数表与输出表信息
+     *
      * @param number
      * @return
      */
@@ -363,13 +372,31 @@ public class DeviceController {
 
     @GetMapping("deviceNameJoinChainNumList/{deviceName}")
     @ApiOperation(value = "根据设备名称查询对应规则链", notes = "根据设备名称查询对应规则链")
-    @ApiImplicitParam(name="deviceName",value = "设备名称",dataType = "String")
+    @ApiImplicitParam(name = "deviceName", value = "设备名称", dataType = "String")
     public Response<List<ChainNumDTO>> deviceNameJoinChainNumList(@PathVariable String deviceName) {
         try {
             List<ChainNumDTO> chainNumDTOList = deviceService.deviceNameJoinChainNumList(deviceName);
             return Response.success(chainNumDTOList);
         } catch (Exception e) {
-            log.error("根据设备名称查询对应规则链",e);
+            log.error("根据设备名称查询对应规则链", e);
+            throw e;
+        }
+    }
+
+    @DeleteMapping("deleteDeviceNumberJoinOutputJoinParam/{deviceNumber}")
+    @ApiOperation(value = "根据设备编号删除设备及该设备输出表数据和参数表数据",
+            notes = "根据设备编号删除设备及该设备输出表数据和参数表数据")
+    @ApiImplicitParam(name = "deviceNumber", value = "设备编号", dataType = "String")
+    public String deleteDeviceNumberJoinOutputJoinParam(@PathVariable String deviceNumber) {
+        try {
+            int count = deviceService.deleteDeviceNumberJoinOutputJoinParam(deviceNumber);
+            if (count >= 1) {
+                return "根据设备编号删除设备及该设备输出表数据和参数表数据,删除成功";
+            } else {
+                return "您输入的”设备编号“无法找到哦！！,删除失败";
+            }
+        } catch (Exception e) {
+            log.error("根据设备编号删除设备及该设备输出表数据和参数表数据", e);
             throw e;
         }
     }

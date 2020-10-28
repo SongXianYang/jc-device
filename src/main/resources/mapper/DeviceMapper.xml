@@ -141,4 +141,17 @@
         WHERE
             d.name = #{deviceName}
      </select>
+
+    <delete id="deleteDeviceNumberJoinOutputJoinParam" parameterType="java.lang.String" >
+        DELETE
+        d,
+        p,
+        o
+        FROM
+            device AS d
+            LEFT JOIN device_param AS p ON d.NUMBER = p.DEVICE_NUM
+            LEFT JOIN device_output AS o ON d.NUMBER = o.DEVICE_NUM
+        WHERE
+            d.NUMBER = #{deviceNumber}
+    </delete>
 </mapper>
