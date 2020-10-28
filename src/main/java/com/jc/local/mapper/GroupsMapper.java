@@ -29,4 +29,7 @@ public interface GroupsMapper {
     //根据组名称查询设备
     List<GroupAndDeviceDTO> selectDeviceGroup(String groupName);
 
+    //根据id查id
+    Groups selectId(Integer id);
+
 }

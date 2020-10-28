@@ -156,7 +156,12 @@ public class DeviceController {
     public Response<Device> getById(@PathVariable Integer id) {
         try {
             Device byId = deviceMapper.getById(id);
-            return Response.success(byId);
+            if (byId.getId().equals(id)) {
+                return Response.success(byId);
+            } else {
+                return null;
+            }
+
         } catch (Exception exception) {
             log.error("根据id查询设备", exception);
             return Response.failure("根据id查询设备失败");

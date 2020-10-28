@@ -138,11 +138,14 @@ public class DeviceGroupController {
      */
     @GetMapping("byId/{id}")
     @ApiOperation(value = "根据id查询设备分组", notes = "根据id查询设备分组")
-    @ApiImplicitParam(name = "id", value = "设备id", dataType = "int")
+    @ApiImplicitParam(name = "id", value = "设备分组id", dataType = "int")
     public Response<DeviceGroup> getById(@PathVariable Integer id) {
         try {
-            DeviceGroup byId = deviceGroupMapper.getById(id);
-            return Response.success(byId);
+            DeviceGroup byId =deviceGroupMapper.getById(id);
+            if (byId.getId().equals(id)) {
+                return Response.success(byId);
+            }
+            return null;
         } catch (Exception exception) {
             log.error("根据id查询设备分组", exception);
             throw exception;

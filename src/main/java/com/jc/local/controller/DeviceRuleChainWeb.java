@@ -148,7 +148,11 @@ public class DeviceRuleChainWeb {
     public Response<DeviceRuleChain> getById(@PathVariable Integer id) {
         try {
             DeviceRuleChain byId = deviceRuleChainMapper.getById(id);
-            return Response.success(byId);
+            if (byId.getId().equals(id)) {
+                return Response.success(byId);
+            } else {
+                return null;
+            }
         } catch (Exception exception) {
             log.error("根据id查询设备规则链", exception);
             throw exception;

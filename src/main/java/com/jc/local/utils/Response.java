@@ -28,7 +28,7 @@ public class Response<T> implements Serializable {
     }
 
     public static <T> Response<T> failure(String message) {
-        return new Response<T>(-1, "系统异常请联系管理员！！", null);
+        return new Response<T>(-1, message="系统异常请联系管理员！！", null);
     }
 
     public static <T> Response<T> success(T data) {

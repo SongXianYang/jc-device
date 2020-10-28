@@ -27,4 +27,10 @@ public class GroupServiceImpl implements GroupService {
         return save;
 
     }
+
+    @Override
+    public Groups selectId(Integer id) {
+        Groups selectId = groupsMapper.selectId(id);
+        return selectId;
+    }
 }

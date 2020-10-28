@@ -30,29 +30,29 @@ public class GroupsWeb {
     }
 
     /**
-     * 查询所有设备组
+     * 查询所有组
      * @return
      */
     @GetMapping("/list")
-    @ApiOperation(value = "查询所有设备组", notes = "查询所有设备组")
+    @ApiOperation(value = "查询所有组", notes = "查询所有组")
     public Response<List<Groups>> list() {
         try {
             List<Groups> list = groupsMapper.selectAll();
             return Response.success(list);
         } catch (Exception exception) {
-            log.error("查询所有设备组", exception);
+            log.error("查询所有组", exception);
             throw exception;
         }
     }
 
     /**
-     * 根据id删除设备组
+     * 根据id删除组
      * @param id
      * @return
      */
     @DeleteMapping("deleteId/{id}")
-    @ApiImplicitParam(name = "id", value = "设备组id", required = true, dataType = "int")
-    @ApiOperation(value = "根据id删除设备组", notes = "根据id删除设备组")
+    @ApiImplicitParam(name = "id", value = "组id", required = true, dataType = "int")
+    @ApiOperation(value = "根据id删除组", notes = "根据id删除组")
     public String deleteId(@PathVariable int id) {
         try {
             int result = groupsMapper.deleteId(id);
@@ -62,18 +62,18 @@ public class GroupsWeb {
                 return "删除失败！";
             }
         } catch (Exception exception) {
-            log.error("根据id删除设备组", exception);
+            log.error("根据id删除组", exception);
             throw exception;
         }
     }
 
     /**
-     * 添加设备组
+     * 添加组
      * @param groups
      * @return
      */
     @PostMapping("save")
-    @ApiOperation(value = "添加设备组", notes = "添加设备组")
+    @ApiOperation(value = "添加组", notes = "添加组")
     public String save(Groups groups) {
         try {
             groups.setNumber(NumberUtils.createNumberKey());
@@ -84,18 +84,18 @@ public class GroupsWeb {
                 return "添加失败";
             }
         } catch (Exception exception) {
-            log.error("添加设备组",exception);
+            log.error("添加组",exception);
             throw exception;
         }
     }
 
     /**
-     * 更新设备组
+     * 更新组
      * @param groups
      * @return
      */
     @PutMapping("update")
-    @ApiOperation(value = "更新设备组", notes = "更新设备组")
+    @ApiOperation(value = "更新组", notes = "更新组")
     public String update(Groups groups) {
         try {
             int result = groupsMapper.update(groups);
@@ -105,25 +105,30 @@ public class GroupsWeb {
                 return "更新失败";
             }
         } catch (Exception exception) {
-            log.error("更新设备组", exception);
+            log.error("更新组", exception);
             throw exception;
         }
     }
 
     /**
-     * 根据id查询设备组
+     * 根据id查询组
      * @param id
      * @return
      */
     @GetMapping("byId/{id}")
-    @ApiOperation(value = "根据id查询设备组", notes = "根据id查询设备组")
-    @ApiImplicitParam(name = "id", value = "设备组id", dataType = "int")
+    @ApiOperation(value = "根据id查询组", notes = "根据id查询组")
+    @ApiImplicitParam(name = "id", value = "组id", dataType = "int")
     public Response<Groups> getById(@PathVariable Integer id) {
         try {
-            Groups byId = groupsMapper.getById(id);
-            return Response.success(byId);
+            if (groupService.selectId(id).getId().equals(id)) {
+                Groups byId = groupsMapper.getById(id);
+                return Response.success(byId);
+            } else {
+                return Response.failure("");
+            }
+
         } catch (Exception exception) {
-            log.error("根据id查询设备组", exception);
+            log.error("根据id查询组", exception);
             throw exception;
         }
     }

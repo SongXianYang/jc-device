@@ -114,7 +114,12 @@ public class DeviceTagWeb {
     public Response<DeviceTag> getById(@PathVariable Integer id) {
         try {
             DeviceTag byId = deviceTagMapper.getById(id);
-            return Response.success(byId);
+            if (byId.getId().equals(id)) {
+                return Response.success(byId);
+            } else {
+                return null;
+            }
+
         } catch (Exception exception) {
             log.error("根据id查询设备标签", exception);
             throw exception;

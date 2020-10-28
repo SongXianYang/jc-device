@@ -164,7 +164,11 @@ public class DeviceParamWeb {
     public Response<DeviceParam> getById(@PathVariable Integer id) {
         try {
             DeviceParam byId = deviceParamMapper.getById(id);
-            return Response.success(byId);
+            if (byId.getId().equals(id)) {
+                return Response.success(byId);
+            } else {
+                return null;
+            }
         } catch (Exception exception) {
 
             log.error("根据id查询设备参数", exception);

@@ -163,7 +163,11 @@ public class DeviceOutputController {
     public Response<DeviceOutput> getById(@PathVariable Integer id) {
         try {
             DeviceOutput byId = deviceOutputMapper.getById(id);
-            return Response.success(byId);
+            if (byId.getId().equals(id)) {
+                return Response.success(byId);
+            } else {
+                return null;
+            }
         } catch (Exception exception) {
             log.error("根据id查询设备输出", exception);
             throw exception;
