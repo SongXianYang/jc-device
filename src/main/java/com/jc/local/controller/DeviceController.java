@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -301,6 +302,7 @@ public class DeviceController {
             device.setName(models.getName());
             device.setDevSn(models.getManuNum() + models.getNumber());
             device.setIsDel("0");
+            device.setOpFlag("A");
 
             /**
              * 在输出表中插入：设备编号、元数据编号、数据编码
@@ -321,6 +323,8 @@ public class DeviceController {
                 deviceOutput.setMetaNum(output.getNumber());
                 //赋值；数据编码
                 deviceOutput.setCode(output.getOutputCode());
+                deviceOutput.setIsDel("0");
+                deviceOutput.setOpFlag("A");
                 deviceOutputMapper.save(deviceOutput);
             }
 
@@ -337,6 +341,8 @@ public class DeviceController {
                 deviceParam.setParamNum(param.getNumber());//赋值参数码
                 deviceParam.setCode(param.getCode());//赋值参数码
                 deviceParam.setValue(param.getMpDefault());//赋值参数值
+                deviceParam.setIsDel("0");
+                deviceParam.setOpFlag("A");
                 deviceParamMapper.save(deviceParam);
             }
             int result = deviceService.save(device);
@@ -429,6 +435,30 @@ public class DeviceController {
             return pageInfo;
         } catch (Exception e) {
             log.error("分页查询设备每页显示2条数据", e);
+            throw e;
+        }
+    }
+
+    /**
+     * 利用MySQL数据库limit进行分页每页显示两条数据
+     * @param pageNum
+     * @return
+     */
+    @GetMapping(value = "limitFindAll/{pageNum}", produces = "application/json;charset=UTF-8")
+    @ApiOperation(value ="利用MySQL数据库limit进行分页每页显示两条数据",notes = "利用MySQL数据库limit进行分页每页显示两条数据")
+    @ApiImplicitParam(name = "pageNum",value = "第几页开始",dataType = "int")
+    public List<Device> limitFindAll(@PathVariable int pageNum) {
+        try {
+            HashMap<String, Integer> map = new HashMap<>();
+            map.put("pageNum",pageNum);
+            map.put("pageSize", 2);
+            List<Device> deviceLimit = deviceMapper.limitFindAll(map);
+            for (Device device : deviceLimit) {
+                System.out.println("------------"+device);
+            }
+            return deviceLimit;
+        } catch (Exception e) {
+            log.error("利用MySQL数据库limit进行分页每页显示两条数据", e);
             throw e;
         }
     }

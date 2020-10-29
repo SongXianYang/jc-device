@@ -117,7 +117,8 @@ public class DeviceParamWeb {
             deviceParam.setParamNum(modelParam.getNumber());
             deviceParam.setCode(modelParam.getCode());
             deviceParam.setValue(modelParam.getMpDefault());
-
+            deviceParam.setIsDel("0");
+            deviceParam.setOpFlag("A");
             int result = deviceParamMapper.save(deviceParam);
             if (result >= 1) {
                 return "添加成功";

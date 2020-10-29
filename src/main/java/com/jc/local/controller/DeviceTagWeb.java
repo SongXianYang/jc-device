@@ -70,6 +70,8 @@ public class DeviceTagWeb {
     @ApiOperation(value = "添加设备标签", notes = "添加设备标签")
     public String save(DeviceTag deviceTag) {
         try {
+            deviceTag.setIsDel("0");
+            deviceTag.setOpFlag("A");
             int result = deviceTagMapper.save(deviceTag);
             if (result >= 1) {
                 return "添加成功";

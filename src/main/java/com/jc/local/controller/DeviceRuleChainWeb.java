@@ -104,6 +104,8 @@ public class DeviceRuleChainWeb {
     @ApiOperation(value = "添加设备规则链", notes = "添加设备规则链")
     public String save(DeviceRuleChain deviceRuleChain) {
         try {
+            deviceRuleChain.setIsDel("0");
+            deviceRuleChain.setOpFlag("A");
             int result = deviceRuleChainMapper.save(deviceRuleChain);
             if (result >= 1) {
                 return "添加成功";
@@ -188,6 +190,8 @@ public class DeviceRuleChainWeb {
             System.out.println(chain);
             ruleChain.setDeviceNum(device.getNumber());
             ruleChain.setChainNum(chain.getNumber());
+            ruleChain.setIsDel("0");
+            ruleChain.setOpFlag("A");
             System.out.println(chain);
             int i = deviceRuleChainService.save(ruleChain);
             if (i >= 1) {

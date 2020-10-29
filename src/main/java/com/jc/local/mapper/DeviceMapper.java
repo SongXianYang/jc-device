@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 
 import java.util.List;
+import java.util.Map;
 
 //设备
 @Mapper
@@ -31,7 +32,6 @@ public interface DeviceMapper {
     /**
      * ids删除多个
      * 用List来接受参数，因为会传来多个 以逗号（，）隔开的字符串整数
-     *
      * @param ids
      * @return
      */
@@ -56,5 +56,6 @@ public interface DeviceMapper {
     //根据设备编号删除设备及该设备输出表数据和参数表数据
     int deleteDeviceNumberJoinOutputJoinParam(String deviceNumber);
 
-    List<Device> pageFindAll();
+    //利用MySQL数据库limit进行分页
+    List<Device> limitFindAll(Map<String,Integer> map);
 }

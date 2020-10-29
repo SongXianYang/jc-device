@@ -98,6 +98,8 @@ public class DeviceGroupController {
             //组编号与设备编号赋值
             deviceGroup.setDeviceNum(device.getNumber());
             deviceGroup.setGroupNum(groups.getNumber());
+            deviceGroup.setIsDel("0");
+            deviceGroup.setOpFlag("A");
             int result = deviceGroupMapper.save(deviceGroup);
             if (result >= 1) {
                 return "添加成功";

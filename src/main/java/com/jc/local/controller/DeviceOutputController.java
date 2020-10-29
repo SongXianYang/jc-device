@@ -115,7 +115,8 @@ public class DeviceOutputController {
                 deviceOutput.setDeviceNum(device.getNumber());
                 deviceOutput.setMetaNum(modelOutput.getNumber());
                 deviceOutput.setCode(modelOutput.getOutputCode());
-
+                deviceOutput.setIsDel("0");
+                deviceOutput.setOpFlag("A");
             } catch (Exception exception) {
                 exception.printStackTrace();
             }

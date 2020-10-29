@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 
 @Service("DeviceService")
@@ -77,11 +78,20 @@ public class DeviceServiceImpl implements DeviceService {
         //这个分页方法（PageHelper）继承PageMethod 拿到startPage这个静态方法
         PageHelper.startPage(pageNum, pageSize);
         //获取当前所有数据
-        List<Device> deviceList = deviceMapper.pageFindAll();
+        List<Device> deviceList = deviceMapper.selectAll();
         //将返回的内容放到 PageInfo中
         PageInfo<Device> page = new PageInfo<>(deviceList);
         //返回出去
         return page;
+    }
+
+    @Override
+    public List<Device> limitFindAll(int pageNum, int pageSize) {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("pageNum", (pageNum-1)*pageSize);
+        map.put("pageSize", pageSize);
+        List<Device> deviceList = deviceMapper.limitFindAll(map);
+        return deviceList;
     }
 
 

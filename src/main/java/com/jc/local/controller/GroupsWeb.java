@@ -76,6 +76,8 @@ public class GroupsWeb {
     @ApiOperation(value = "添加组", notes = "添加组")
     public String save(Groups groups) {
         try {
+            groups.setIsDel("0");
+            groups.setOpFlag("A");
             groups.setNumber(NumberUtils.createNumberKey());
             int result = groupService.save(groups);
             if (result >= 1) {

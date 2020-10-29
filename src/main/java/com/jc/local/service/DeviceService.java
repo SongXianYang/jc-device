@@ -23,4 +23,7 @@ public interface DeviceService {
 
     //分页查询设备每页显示2条数据
     PageInfo<Device> pageFindAll(int pageNum, int pageSize);
+
+    //利用MySQL数据库limit进行分页每页显示两条数据
+    List<Device> limitFindAll(int pageNum,int pageSize);
 }
