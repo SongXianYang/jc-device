@@ -27,8 +27,8 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("这里是测试物联网设备的功能文档")    //文档的标题
-                .description("测试用的")      //文档的描述
+                .title("物联网设备")    //文档的标题
+                .description("测试物联网设备的功能文档")      //文档的描述
                 .version("v0.0.1")                          //版本
                 .build();
     }

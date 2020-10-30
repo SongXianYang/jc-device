@@ -20,7 +20,7 @@ public class DeviceRuleChainServiceImpl implements DeviceRuleChainService {
         this.httpAPIService = httpAPIService;
         this.deviceMapper = deviceMapper;
     }
-
+    @Override
     @Transactional(rollbackFor = {RuntimeException.class,Error.class})
     public int save(DeviceRuleChain deviceRuleChain) {
         return deviceRuleChainMapper.save(deviceRuleChain);

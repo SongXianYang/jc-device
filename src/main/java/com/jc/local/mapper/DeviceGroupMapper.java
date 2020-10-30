@@ -29,6 +29,12 @@ public interface DeviceGroupMapper {
     int save(DeviceGroup deviceGroup);
 
     //删除设备
+
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Delete("delete from device_group where ID=#{id} ")
     int deleteId(Integer id);
 

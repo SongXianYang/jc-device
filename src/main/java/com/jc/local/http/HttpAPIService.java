@@ -105,8 +105,6 @@ public class HttpAPIService {
 
         // 发起请求
         CloseableHttpResponse response = this.httpClient.execute(httpPost);
-//        return new HttpResult(response.getStatusLine().getStatusCode(), EntityUtils.toString(
- //               response.getEntity(), "UTF-8"));
         return new HttpResult(response.getStatusLine().getStatusCode(),EntityUtils
                 .toString(response.getEntity(),""));
 
