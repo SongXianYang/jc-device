@@ -8,6 +8,9 @@ import lombok.Data;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 传感器设备信息表实体属性
+ */
 @ApiModel(value = "传感器设备信息表实体属性")
 @Data
 public class Device {
@@ -58,11 +61,12 @@ public class Device {
 
     //    一台设备对多个参数表
     @ApiModelProperty(value = "参数表")
-    @IgnoreSwagger2Parameter // 只需要添加注解就可以在文档中排除参数
+    @IgnoreSwagger2Parameter
+    // 只需要添加注解就可以在文档中排除参数
     private List<DeviceParam> deviceParamsList;
 
-    //    一台设备对多个设备输出表
+    //一台设备对多个设备输出表
     @ApiModelProperty(value = "设备输出")
-    @IgnoreSwagger2Parameter // 只需要添加注解就可以在文档中排除参数
+    @IgnoreSwagger2Parameter
     private List<DeviceOutput> deviceOutputList;
 }
