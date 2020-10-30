@@ -1,6 +1,5 @@
 package com.jc.local.dto;
 
-import com.xzixi.swagger2.plus.annotation.IgnoreSwagger2Parameter;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 

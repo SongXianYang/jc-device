@@ -1,15 +1,12 @@
 package com.jc.local.controller;
 
-import com.jc.local.entity.Device;
 import com.jc.local.entity.DeviceGroup;
-import com.jc.local.entity.DeviceOutput;
 import com.jc.local.entity.Groups;
 import com.jc.local.entity.ruleEntity.RuleRelation;
 import com.jc.local.http.HttpAPIService;
 import com.jc.local.mapper.DeviceMapper;
 import com.jc.local.mapper.GroupsMapper;
 import com.jc.local.service.DeviceGroupService;
-import com.jc.local.service.DeviceOutputService;
 import com.jc.local.service.DeviceService;
 import com.jc.local.service.RuleRelationService;
 import com.jc.local.utils.Response;

@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ExceptionConfig {
     /**
      * ExceptionHandler 定义在异常处理方法上
-     *    getRequestURL  在发生异常的时候把url打印在控制台
+     * getRequestURL  在发生异常的时候把url打印在控制台
      * @param e
      * @param <T>
      * @return
