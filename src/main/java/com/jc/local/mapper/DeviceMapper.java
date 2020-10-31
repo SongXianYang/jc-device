@@ -57,5 +57,5 @@ public interface DeviceMapper {
     int deleteDeviceNumberJoinOutputJoinParam(String deviceNumber);
 
     //利用MySQL数据库limit进行分页
-    List<Device> limitFindAll(Map<String,Integer> map);
+    List<Device> limitFindAll (Map<String,Integer> map);
 }

@@ -155,7 +155,7 @@
             d.NUMBER = #{deviceNumber}
     </delete>
 
-    <select id="limitFindAll" resultType="com.jc.local.entity.Device" parameterType="Map">
-        select * from device LIMIT #{pageNum},#{pageSize}
+    <select id="limitFindAll" resultMap="BaseResultMap" parameterType="Map">
+        select * from device Limit ${pageNum},${pageSize}
     </select>
 </mapper>

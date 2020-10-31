@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 
-@Service("DeviceService")
+@Service()
 public class DeviceServiceImpl implements DeviceService {
 
     HttpAPIService httpAPIService;
@@ -86,10 +86,10 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public List<Device> limitFindAll(int pageNum, int pageSize) {
+    public List<Device> limitFindAll(Integer pageNums, Integer pageSizes) {
         HashMap<String, Integer> map = new HashMap<>();
-        map.put("pageNum", (pageNum-1)*pageSize);
-        map.put("pageSize", pageSize);
+        map.put("pageNum", (pageNums-1)*pageSizes);
+        map.put("pageSize", pageSizes);
         List<Device> deviceList = deviceMapper.limitFindAll(map);
         return deviceList;
     }

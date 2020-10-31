@@ -3,6 +3,7 @@ package com.jc.local.controller;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jc.local.dto.ChainNumDTO;
 import com.jc.local.entity.*;
@@ -155,23 +156,23 @@ public class DeviceController {
      * @param id
      * @return
      */
+
+
+    //
     @GetMapping(value = "byId/{id}", produces = "application/json;charset=UTF-8")
     @ApiOperation(value = "根据id查询设备", notes = "根据id查询设备")
     @ApiImplicitParam(name = "id", value = "设备id", dataType = "int")
     public Response<Device> getById(@PathVariable Integer id) {
         try {
             Device byId = deviceMapper.getById(id);
-            if (byId.getId().equals(id)) {
                 return Response.success(byId);
-            } else {
-                return null;
-            }
-
         } catch (Exception exception) {
             log.error("根据id查询设备", exception);
-            return Response.failure("根据id查询设备失败");
+            throw exception;
         }
     }
+
+    //
 
     /**
      * 根据ids进行批量删除
@@ -448,14 +449,19 @@ public class DeviceController {
     @ApiOperation(value ="利用MySQL数据库limit进行分页每页显示两条数据",notes = "利用MySQL数据库limit进行分页每页显示两条数据")
     @ApiImplicitParam(name = "pageNum",value = "第几页开始",dataType = "int")
     public List<Device> limitFindAll(@PathVariable int pageNum) {
+
         try {
             HashMap<String, Integer> map = new HashMap<>();
             map.put("pageNum",pageNum);
             map.put("pageSize", 2);
-            List<Device> deviceLimit = deviceMapper.limitFindAll(map);
+            List<Device> deviceLimit = deviceService.limitFindAll(pageNum, 2);
+
             for (Device device : deviceLimit) {
                 System.out.println("------------"+device);
             }
+            PageHelper.clearPage();
+            ThreadLocal<Object> threadLocal = new ThreadLocal<>();
+            threadLocal.remove();
             return deviceLimit;
         } catch (Exception e) {
             log.error("利用MySQL数据库limit进行分页每页显示两条数据", e);
