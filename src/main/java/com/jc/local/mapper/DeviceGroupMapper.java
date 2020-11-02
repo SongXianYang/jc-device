@@ -26,6 +26,7 @@ public interface DeviceGroupMapper {
             "      #{createdTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP}\n" +
             "      )")
         //添加设备
+
     int save(DeviceGroup deviceGroup);
 
     //删除设备
@@ -38,6 +39,13 @@ public interface DeviceGroupMapper {
     @Delete("delete from device_group where ID=#{id} ")
     int deleteId(Integer id);
 
+    /**
+    *@Description: 
+    *@Param: 
+    *@return: 
+    *@Author: SongXianYang
+    *@date: 2020/11/2
+    */
     //更新设备
     int update(DeviceGroup deviceGroup);
 

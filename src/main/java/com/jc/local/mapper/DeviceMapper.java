@@ -4,7 +4,6 @@ import com.jc.local.dto.ChainNumDTO;
 import com.jc.local.entity.Device;
 import com.jc.local.entity.DeviceOutput;
 import com.jc.local.entity.DeviceParam;
-import com.jc.local.entity.DeviceRuleChain;
 import org.apache.ibatis.annotations.Mapper;
 
 
