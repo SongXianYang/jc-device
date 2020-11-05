@@ -91,6 +91,7 @@ public class DeviceServiceImpl implements DeviceService {
         map.put("pageNum", (pageNums-1)*pageSizes);
         map.put("pageSize", pageSizes);
         List<Device> deviceList = deviceMapper.limitFindAll(map);
+        PageHelper.clearPage();
         return deviceList;
     }
 

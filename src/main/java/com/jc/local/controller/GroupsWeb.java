@@ -1,18 +1,32 @@
 package com.jc.local.controller;
 
+import com.alibaba.excel.ExcelReader;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.jc.local.dto.GroupAndDeviceDTO;
 import com.jc.local.entity.Groups;
 import com.jc.local.mapper.GroupsMapper;
 import com.jc.local.service.GroupService;
+import com.jc.local.utils.ExcelListener;
+import com.jc.local.utils.ExcelUtils;
 import com.jc.local.utils.NumberUtils;
 import com.jc.local.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.sl.usermodel.Sheet;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+
 //设备组
 @Api(tags = "组")
 @Slf4j
@@ -29,11 +43,23 @@ public class GroupsWeb {
         this.groupService = groupService;
     }
 
+
+    public static ObjectMapper mapper = new ObjectMapper();
+
+    static {
+        // 转换为格式化的json
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        // 如果json中有新增的字段并且是实体类类中不存在的，不报错
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        //修改日期格式
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+    }
     /**
      * 查询所有组
+     *
      * @return
      */
-    @GetMapping(value = "/list",produces="application/json;charset=UTF-8")
+    @GetMapping(value = "/list", produces = "application/json;charset=UTF-8")
     @ApiOperation(value = "查询所有组", notes = "查询所有组")
     public Response<List<Groups>> list() {
         try {
@@ -47,6 +73,7 @@ public class GroupsWeb {
 
     /**
      * 根据id删除组
+     *
      * @param id
      * @return
      */
@@ -69,6 +96,7 @@ public class GroupsWeb {
 
     /**
      * 添加组
+     *
      * @param groups
      * @return
      */
@@ -86,13 +114,14 @@ public class GroupsWeb {
                 return "添加失败";
             }
         } catch (Exception exception) {
-            log.error("添加组",exception);
+            log.error("添加组", exception);
             throw exception;
         }
     }
 
     /**
      * 更新组
+     *
      * @param groups
      * @return
      */
@@ -114,10 +143,11 @@ public class GroupsWeb {
 
     /**
      * 根据id查询组
+     *
      * @param id
      * @return
      */
-    @GetMapping(value = "byId/{id}",produces="application/json;charset=UTF-8")
+    @GetMapping(value = "byId/{id}", produces = "application/json;charset=UTF-8")
     @ApiOperation(value = "根据id查询组", notes = "根据id查询组")
     @ApiImplicitParam(name = "id", value = "组id", dataType = "int")
     public Response<Groups> getById(@PathVariable Integer id) {
@@ -137,10 +167,11 @@ public class GroupsWeb {
 
     /**
      * 根据组名称查询设备
+     *
      * @param groupName
      * @return
      */
-    @GetMapping(value = "selectGroup/{groupName}",produces="application/json;charset=UTF-8")
+    @GetMapping(value = "selectGroup/{groupName}", produces = "application/json;charset=UTF-8")
     @ApiOperation(value = "根据组名称查询设备", notes = "根据组组名称查询设备")
     @ApiImplicitParam(name = "groupName", value = "组名称", dataType = "String")
     public Response<List<GroupAndDeviceDTO>> selectGroup(@PathVariable String groupName) {
@@ -150,6 +181,52 @@ public class GroupsWeb {
         } catch (Exception exception) {
             log.error("根据组名称查询设备", exception);
             throw exception;
+        }
+    }
+
+    @GetMapping(value = "excelGroupExport", produces = "application/json;charset=UTF-8")
+    @ApiOperation(value = "设备组导出", notes = "设备组导出")
+    /**
+    *@Description: 设备组导出
+    *@Param: [response]
+    *@return: java.lang.String
+    *@Author: SongXianYang
+    *@date: 2020/11/4
+    */
+    public String excelGroupExport(HttpServletResponse response) throws Exception {
+        List<Groups> groupsList = groupsMapper.selectAll();
+        try {
+            ExcelUtils.export2Web(response, "设备组表", "设备组", Groups.class, groupsList);
+            return "设备组导出成功";
+        } catch (Exception e) {
+            log.error("设备组导出", e);
+            throw e;
+        }
+    }
+
+
+    @PostMapping(value = "import", produces = "application/json;charset=UTF-8")
+    @ApiOperation(value = "设备组文件文件导入",notes = "设备组文件文件导入")
+    public void UserImport(@RequestBody MultipartFile excel) throws IOException {
+        try {
+            List<Groups> groupsList = ExcelUtils.readExcel(excel, Groups.class);
+            System.out.println("------------"+groupsList.toString());
+            for (Groups group : groupsList) {
+                Groups groupEntity = new Groups();
+                groupEntity.setName(group.getName());
+                groupEntity.setNumber(group.getNumber());
+                groupEntity.setDescription(group.getDescription());
+                groupEntity.setIsDel(group.getIsDel());
+                groupEntity.setOpFlag(group.getOpFlag());
+                groupEntity.setCreatedBy(group.getCreatedBy());
+                groupEntity.setCreatedTime(group.getCreatedTime());
+                groupEntity.setUpdatedBy(group.getUpdatedBy());
+                groupEntity.setUpdatedTime(group.getUpdatedTime());
+                groupsMapper.save(groupEntity);
+            }
+        } catch (Exception e) {
+            log.error("设备组文件文件导入", e);
+            throw e;
         }
     }
 }

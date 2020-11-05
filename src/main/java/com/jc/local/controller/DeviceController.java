@@ -152,7 +152,6 @@ public class DeviceController {
 
     /**
      * 根据id查询设备
-     *
      * @param id
      * @return
      */
@@ -292,13 +291,13 @@ public class DeviceController {
             //设置编号，由工具类生成。
             device.setNumber(number);
             //使用httpAPIService对象去获取doGet方法，拿到IP地址为:192.168.0.25服务传来当前设备型号mid的json字符串
-            String s = httpAPIService.doGet("http://192.168.0.25:8888/model/selectOne/" + mid);
+            String modelJson = httpAPIService.doGet("http://192.168.0.25:8888/model/selectOne/" + mid);
             //获取型号编号对象
             /**
              *将json字符串转换成Java对象 （readValue）使用这个方法
              * 属性赋值
              */
-            Model models = mapper.readValue(s, Model.class);
+            Model models = mapper.readValue(modelJson, Model.class);
             device.setDmNum(models.getNumber());
             device.setName(models.getName());
             device.setDevSn(models.getManuNum() + models.getNumber());
@@ -311,14 +310,14 @@ public class DeviceController {
             DeviceOutput deviceOutput = new DeviceOutput();
             deviceOutput.setDeviceNum(number);
             //利用设备型号id
-            String s1 = httpAPIService
+            String modelOutputJson = httpAPIService
                     .doGet("http://192.168.0.25:8888/modeloutput/selectOutputByModelId?mid=" + mid);
             /**
              * 当前服务192.168.0.25:8888，传过来的是一个list集合。
              * 需要用 ModelOutput【】数组对象来接受集合
              * 然后循环遍历数组中的集合
              */
-            ModelOutput[] modelOutput = mapper.readValue(s1, ModelOutput[].class);//输出表对象
+            ModelOutput[] modelOutput = mapper.readValue(modelOutputJson, ModelOutput[].class);//输出表对象
             for (ModelOutput output : modelOutput) {
                 //赋值：元数据编号
                 deviceOutput.setMetaNum(output.getNumber());
@@ -335,8 +334,8 @@ public class DeviceController {
             DeviceParam deviceParam = new DeviceParam();
             deviceParam.setDeviceNum(number);//设备编号
             //用型号编号查询获取 参数表对象
-            String s2 = httpAPIService.doGet("http://192.168.0.25:8888/modelparam/selectParamByModelId?mid=" + mid);
-            ModelParam[] modelParam = mapper.readValue(s2, ModelParam[].class);//参数表对象
+            String modelParamJson = httpAPIService.doGet("http://192.168.0.25:8888/modelparam/selectParamByModelId?mid=" + mid);
+            ModelParam[] modelParam = mapper.readValue(modelParamJson, ModelParam[].class);//参数表对象
 
             for (ModelParam param : modelParam) {
                 deviceParam.setParamNum(param.getNumber());//赋值参数码
@@ -459,9 +458,6 @@ public class DeviceController {
             for (Device device : deviceLimit) {
                 System.out.println("------------"+device);
             }
-            PageHelper.clearPage();
-            ThreadLocal<Object> threadLocal = new ThreadLocal<>();
-            threadLocal.remove();
             return deviceLimit;
         } catch (Exception e) {
             log.error("利用MySQL数据库limit进行分页每页显示两条数据", e);
